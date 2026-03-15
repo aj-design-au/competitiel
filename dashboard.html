@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Competitel — Price Intelligence Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-main:    #F8F9FA;
+      --bg-muted:   #F1F3F5;
+      --bg-surface: #FFFFFF;
+      --bg-inverse: #0A0A0A;
+
+      --text-primary:   #000000;
+      --text-secondary: #4B5563;
+      --text-muted:     #9CA3AF;
+      --text-on-inv:    #FFFFFF;
+
+      --green:       #16A34A;
+      --green-hover: #15803D;
+      --green-light: #F0FDF4;
+      --green-border:#BBF7D0;
+
+      --amber:       #D97706;
+      --amber-light: #FFFBEB;
+      --amber-border:#FDE68A;
+
+      --border:     #E5E7EB;
+      --neutral:    #F3F4F6;
+
+      --shadow-card: 0 20px 40px -12px rgba(0,0,0,0.07);
+      --shadow-soft: 0 10px 25px -5px rgba(0,0,0,0.05);
+
+      --r-card:  28px;
+      --r-input: 12px;
+      --r-pill:  9999px;
+
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-main);
+      color: var(--text-primary);
+      background-image:
+        radial-gradient(1200px 700px at 50% 0%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.00) 55%),
+        linear-gradient(180deg, #F8F9FA 0%, #F1F3F5 55%, #F8F9FA 100%);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .nav-wrap {
+      position: sticky; top: 0; z-index: 100;
+      padding: 14px 24px;
+      background: rgba(248,249,250,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 2px solid rgba(22,163,74,0.25);
+    }
+    .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; letter-spacing: -0.03em; color: var(--green); text-decoration: none; }
+    .logo-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--green); display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 16px; height: 16px; fill: #fff; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link {
+      padding: 6px 14px; border-radius: var(--r-pill);
+      font-size: 13px; font-weight: 500; color: var(--text-secondary);
+      text-decoration: none; transition: background 0.15s, color 0.15s;
+    }
+    .nav-link:hover { background: var(--neutral); color: var(--text-primary); }
+    .nav-link.active { background: var(--bg-inverse); color: #fff; font-weight: 600; }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .btn-nav-ghost {
+      padding: 7px 16px; border-radius: var(--r-pill);
+      border: 1.5px solid var(--border); background: transparent;
+      font-size: 13px; font-weight: 600; color: var(--text-primary);
+      cursor: pointer; font-family: var(--font); transition: border-color 0.15s;
+    }
+    .btn-nav-ghost:hover { border-color: var(--text-primary); }
+    .btn-nav-green {
+      padding: 7px 16px; border-radius: var(--r-pill);
+      background: var(--green); border: none;
+      font-size: 13px; font-weight: 600; color: #fff;
+      cursor: pointer; font-family: var(--font); transition: background 0.15s;
+    }
+    .btn-nav-green:hover { background: var(--green-hover); }
+
+    /* ── ALERT BANNER ── */
+    #alert-banner {
+      background: var(--amber-light);
+      border-bottom: 1px solid var(--amber-border);
+      padding: 0;
+    }
+    .alert-inner {
+      max-width: 1400px; margin: 0 auto;
+      padding: 14px 24px;
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .alert-icon {
+      font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: 2px;
+    }
+    .alert-content { flex: 1; }
+    .alert-headline {
+      font-size: 13px; font-weight: 700; color: #92400E;
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+    }
+    .alert-body { font-size: 13px; color: #78350F; line-height: 1.5; }
+    .alert-rec { font-size: 12px; color: #92400E; margin-top: 4px; font-weight: 500; }
+    .alert-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; margin-top: 2px; }
+    .btn-alert-primary {
+      padding: 6px 14px; border-radius: var(--r-pill);
+      background: #92400E; color: #fff;
+      font-size: 12px; font-weight: 700; border: none; cursor: pointer; font-family: var(--font);
+      transition: background 0.15s;
+    }
+    .btn-alert-primary:hover { background: #78350F; }
+    .btn-alert-ghost {
+      padding: 6px 14px; border-radius: var(--r-pill);
+      background: transparent; color: #92400E;
+      font-size: 12px; font-weight: 600; border: 1.5px solid #FCD34D; cursor: pointer; font-family: var(--font);
+      transition: background 0.15s;
+    }
+    .btn-alert-ghost:hover { background: var(--amber-border); }
+
+    /* ── PAGE SHELL ── */
+    .page { max-width: 1400px; margin: 0 auto; padding: 28px 24px 80px; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
+    }
+    .page-title { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+    .page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .page-header-actions { display: flex; gap: 8px; align-items: center; }
+    .header-select {
+      padding: 7px 32px 7px 12px; border-radius: var(--r-input);
+      border: 1.5px solid var(--border); background: var(--bg-surface);
+      font-family: var(--font); font-size: 13px; font-weight: 500;
+      color: var(--text-primary); appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239CA3AF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+    .header-select:focus { outline: none; border-color: var(--green); }
+    .btn-icon {
+      width: 34px; height: 34px; border-radius: var(--r-input);
+      border: 1.5px solid var(--border); background: var(--bg-surface);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color 0.15s;
+    }
+    .btn-icon:hover { border-color: var(--text-primary); }
+    .btn-icon svg { width: 15px; height: 15px; }
+
+    /* ── KPI STRIP ── */
+    .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .kpi {
+      background: var(--bg-surface); border-radius: 20px;
+      border: 1px solid var(--border); box-shadow: var(--shadow-soft);
+      padding: 18px 20px;
+    }
+    .kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); }
+    .kpi-value { font-size: 28px; font-weight: 800; letter-spacing: -0.04em; margin-top: 4px; line-height: 1; }
+    .kpi-value.green { color: var(--green); }
+    .kpi-sub { font-size: 12px; color: var(--text-secondary); margin-top: 6px; display: flex; align-items: center; gap: 5px; }
+    .kpi-delta { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: var(--r-pill); }
+    .kpi-delta.down { background: #FEF2F2; color: #DC2626; }
+    .kpi-delta.up   { background: var(--green-light); color: var(--green); }
+    .kpi-delta.flat { background: var(--neutral); color: var(--text-muted); }
+
+    /* ── MAIN GRID ── */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 340px;
+      grid-template-rows: auto;
+      gap: 18px;
+      margin-bottom: 24px;
+      align-items: start;
+    }
+    .comp-cards-area {
+      grid-column: 1 / 4;
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+    }
+    .insights-area { grid-column: 4; grid-row: 1; }
+
+    /* ── COMPETITOR CARD ── */
+    .comp-card {
+      background: var(--bg-surface); border-radius: var(--r-card);
+      border: 1px solid var(--border); box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .comp-card:hover { box-shadow: 0 24px 48px -12px rgba(0,0,0,0.10); }
+    .comp-card.paused { opacity: 0.55; }
+    .comp-card-top { padding: 18px 20px 14px; }
+    .comp-card-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+    .comp-card-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+    .comp-card-platform { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .pos-badge {
+      font-size: 10px; font-weight: 700; padding: 4px 9px; border-radius: var(--r-pill);
+      text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+    }
+    .pos-higher { background: #FEF3C7; color: #92400E; }
+    .pos-lower  { background: var(--green-light); color: var(--green); }
+    .pos-matched{ background: var(--neutral); color: var(--text-secondary); }
+    .pos-paused { background: var(--neutral); color: var(--text-muted); }
+
+    .price-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .price-col-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px; }
+    .price-col-val { font-size: 17px; font-weight: 800; letter-spacing: -0.03em; }
+    .price-col-val.main { font-size: 22px; color: var(--text-primary); }
+    .price-delta {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 11px; font-weight: 600; margin-top: 3px;
+      padding: 2px 7px; border-radius: var(--r-pill);
+    }
+    .delta-down { background: #FEF2F2; color: #DC2626; }
+    .delta-up   { background: var(--green-light); color: var(--green); }
+    .delta-flat { background: var(--neutral); color: var(--text-muted); }
+
+    /* ── TREND CHART ── */
+    .trend-chart-wrap {
+      padding: 0 20px 16px;
+    }
+    .trend-chart-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 6px; }
+    .trend-svg { width: 100%; height: 64px; display: block; overflow: visible; }
+
+    /* ── CARD FOOTER ── */
+    .comp-card-footer {
+      border-top: 1px solid var(--neutral); padding: 10px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .comp-card-footer-stat { font-size: 12px; color: var(--text-muted); }
+    .comp-card-footer-stat strong { color: var(--text-primary); font-weight: 600; }
+    .btn-card {
+      font-size: 12px; font-weight: 600; color: var(--green);
+      background: none; border: none; cursor: pointer; font-family: var(--font);
+      display: flex; align-items: center; gap: 4px;
+      padding: 4px 0; transition: opacity 0.15s;
+    }
+    .btn-card:hover { opacity: 0.7; }
+
+    /* ── EXPANDED CARD PANEL ── */
+    .comp-card-expanded {
+      display: none; border-top: 1px solid var(--neutral);
+      background: var(--bg-main); padding: 14px 20px;
+    }
+    .comp-card-expanded.open { display: block; }
+    .expanded-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 10px; }
+    .product-price-list { display: flex; flex-direction: column; gap: 8px; }
+    .ppl-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
+    .ppl-name { color: var(--text-secondary); }
+    .ppl-price { font-weight: 700; }
+
+    /* ── INSIGHTS PANEL ── */
+    .insights-panel {
+      background: var(--bg-surface); border-radius: var(--r-card);
+      border: 1px solid var(--border); box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+    .insights-head {
+      padding: 18px 20px 14px; border-bottom: 1px solid var(--neutral);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .insights-head-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .insights-head-icon svg { width: 16px; height: 16px; fill: #fff; }
+    .insights-title { font-size: 14px; font-weight: 700; }
+    .insights-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .insights-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 18px; }
+    .insight-section-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .insight-prose { font-size: 13px; line-height: 1.65; color: var(--text-secondary); }
+    .insight-prose strong { color: var(--text-primary); font-weight: 600; }
+
+    .trend-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .trend-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 10px; border-radius: var(--r-pill);
+      font-size: 12px; font-weight: 500; border: 1px solid var(--border);
+    }
+    .trend-pill .arrow { font-size: 10px; }
+    .trend-pill.down { background: #FEF2F2; border-color: #FECACA; color: #DC2626; }
+    .trend-pill.up   { background: var(--green-light); border-color: var(--green-border); color: var(--green); }
+    .trend-pill.flat { background: var(--neutral); color: var(--text-muted); }
+
+    .seasonal-bar { margin-top: 6px; }
+    .seasonal-track {
+      height: 6px; background: var(--neutral); border-radius: var(--r-pill); margin-top: 6px; overflow: hidden;
+    }
+    .seasonal-fill { height: 100%; border-radius: var(--r-pill); background: var(--green); }
+
+    .insight-divider { height: 1px; background: var(--neutral); margin: 0 -20px; }
+
+    /* ── YOUR PRODUCTS SECTION ── */
+    .section-card {
+      background: var(--bg-surface); border-radius: var(--r-card);
+      border: 1px solid var(--border); box-shadow: var(--shadow-card);
+      margin-bottom: 20px; overflow: hidden;
+    }
+    .section-head {
+      padding: 20px 24px 16px; border-bottom: 1px solid var(--neutral);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .section-title { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .section-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+    .products-table { width: 100%; border-collapse: collapse; }
+    .products-table th {
+      text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; color: var(--text-muted);
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+    }
+    .products-table td { padding: 16px 16px; border-bottom: 1px solid var(--neutral); vertical-align: middle; }
+    .products-table tr:last-child td { border-bottom: none; }
+    .products-table tr:hover td { background: var(--bg-main); }
+
+    .prod-name { font-size: 14px; font-weight: 600; }
+    .prod-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .your-price-big { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
+    .vs-avg { font-size: 12px; margin-top: 3px; font-weight: 500; }
+    .vs-avg.above { color: #DC2626; }
+    .vs-avg.below { color: var(--green); }
+    .margin-wrap { display: flex; flex-direction: column; gap: 5px; }
+    .margin-val { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: var(--green); }
+    .margin-bar-track { height: 5px; background: var(--neutral); border-radius: var(--r-pill); width: 80px; overflow: hidden; }
+    .margin-bar-fill { height: 100%; border-radius: var(--r-pill); background: var(--green); }
+    .margin-target { font-size: 11px; color: var(--text-muted); }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 11px; border-radius: var(--r-pill);
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .status-raise  { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
+    .status-high   { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+    .status-target { background: var(--neutral); color: var(--text-secondary); border: 1px solid var(--border); }
+
+    /* ── SLIDER ── */
+    .slider-wrap { display: flex; flex-direction: column; gap: 6px; min-width: 160px; }
+    .slider-price-display { font-size: 14px; font-weight: 700; }
+    input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 4px; border-radius: var(--r-pill);
+      background: var(--neutral); outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px;
+      border-radius: 50%; background: var(--green);
+      border: 2.5px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--green); border: 2.5px solid #fff; cursor: pointer;
+    }
+    .slider-range { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); }
+
+    /* ── HISTORY SECTION ── */
+    .history-filters {
+      padding: 14px 24px; border-bottom: 1px solid var(--neutral);
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .filter-group { display: flex; gap: 6px; }
+    .filter-chip {
+      padding: 5px 12px; border-radius: var(--r-pill);
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-secondary); font-family: var(--font);
+      transition: all 0.15s;
+    }
+    .filter-chip.active { background: var(--bg-inverse); color: #fff; border-color: var(--bg-inverse); font-weight: 600; }
+    .filter-chip:hover:not(.active) { border-color: var(--text-primary); color: var(--text-primary); }
+    .filter-sep { width: 1px; background: var(--border); align-self: stretch; }
+
+    .timeline { padding: 8px 0; }
+    .timeline-entry {
+      display: grid; align-items: center;
+      grid-template-columns: 140px 140px 1fr auto;
+      padding: 13px 24px; gap: 16px;
+      border-bottom: 1px solid var(--neutral);
+      transition: background 0.12s;
+    }
+    .timeline-entry:last-child { border-bottom: none; }
+    .timeline-entry:hover { background: var(--bg-main); }
+    .timeline-time { font-size: 12px; color: var(--text-muted); }
+    .timeline-comp { font-size: 13px; font-weight: 600; }
+    .timeline-product { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+    .timeline-change { display: flex; align-items: center; gap: 8px; }
+    .timeline-from { font-size: 14px; color: var(--text-muted); text-decoration: line-through; }
+    .timeline-arrow { font-size: 12px; color: var(--text-muted); }
+    .timeline-to { font-size: 14px; font-weight: 700; }
+    .timeline-pct {
+      font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: var(--r-pill);
+    }
+    .pct-down { background: #FEF2F2; color: #DC2626; }
+    .pct-up   { background: var(--green-light); color: var(--green); }
+
+    .timeline-type {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; padding: 3px 9px; border-radius: var(--r-pill);
+      background: var(--neutral); color: var(--text-muted);
+    }
+    .type-drop { background: #FEF2F2; color: #DC2626; }
+    .type-rise { background: var(--green-light); color: var(--green); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg-inverse); padding: 40px 24px; }
+    .footer-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: #fff; }
+    .footer-logo span { color: var(--green); }
+    .footer-note { font-size: 12px; color: var(--text-muted); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .main-grid { grid-template-columns: 1fr 1fr; }
+      .comp-cards-area { grid-column: 1 / 3; grid-template-columns: 1fr 1fr; }
+      .insights-area { grid-column: 1 / 3; }
+      .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 700px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .comp-cards-area { grid-column: 1; grid-template-columns: 1fr; }
+      .insights-area { grid-column: 1; }
+      .kpi-strip { grid-template-columns: 1fr 1fr; }
+      .timeline-entry { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav-wrap">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M3 17l4-8 4 4 4-7 4 11H3z"/></svg>
+      </div>
+      Competitel
+    </a>
+    <div class="nav-links">
+      <a href="dashboard.html" class="nav-link active">Dashboard</a>
+      <a href="index.html" class="nav-link">Competitors</a>
+      <a href="#" class="nav-link">Alerts</a>
+      <a href="#" class="nav-link">Reports</a>
+    </div>
+    <div class="nav-actions">
+      <span id="nav-user-email" style="font-size:12px;color:var(--text-muted);margin-right:4px;"></span>
+      <button class="btn-nav-ghost" onclick="signOut()">Sign Out</button>
+      <button class="btn-nav-ghost" onclick="location.reload()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;margin-right:5px;vertical-align:middle;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Refresh
+      </button>
+      <button class="btn-nav-green">Upgrade Plan</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── ALERT BANNER ── -->
+<div id="alert-banner">
+  <div class="alert-inner">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-content">
+      <div class="alert-headline">Competitor Price Drop Detected</div>
+      <div class="alert-body">
+        <strong>Acme Corp</strong> lowered <strong>Pro Carry Duffel 45L</strong> by <strong>15.1%</strong> — from $158.99 to $134.99. This undercuts your current price by $14.01.
+      </div>
+      <div class="alert-rec">Recommended Action: Match price to stay competitive, or differentiate on quality and brand value to justify the premium.</div>
+    </div>
+    <div class="alert-actions">
+      <button class="btn-alert-primary" onclick="document.getElementById('alert-banner').style.display='none'">View Details</button>
+      <button class="btn-alert-ghost" onclick="document.getElementById('alert-banner').style.display='none'">Dismiss</button>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── PAGE HEADER ── -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">Price Intelligence Dashboard</div>
+      <div class="page-subtitle">Pro Carry Duffel 45L &middot; Updated 2 minutes ago &middot; 3 active competitors tracked</div>
+    </div>
+    <div class="page-header-actions">
+      <select class="header-select">
+        <option>Pro Carry Duffel 45L</option>
+        <option>Weekender Tote — Black</option>
+        <option>Slim Laptop Sleeve 15"</option>
+      </select>
+      <select class="header-select">
+        <option>Last 30 Days</option>
+        <option>Last 7 Days</option>
+        <option>Last 90 Days</option>
+      </select>
+      <button class="btn-icon" title="Export">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── KPI STRIP ── -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-label">Market Average</div>
+      <div class="kpi-value">$144.00</div>
+      <div class="kpi-sub">
+        <span class="kpi-delta down">↓ 3.2%</span>
+        vs last month
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Your Price</div>
+      <div class="kpi-value green">$149.00</div>
+      <div class="kpi-sub">+$5.00 above avg &middot; <span style="color:var(--green);font-weight:600;">42% margin</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Price Events (30d)</div>
+      <div class="kpi-value">23</div>
+      <div class="kpi-sub">
+        <span class="kpi-delta down">18 drops</span>
+        <span class="kpi-delta up">5 rises</span>
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Lowest Competitor</div>
+      <div class="kpi-value">$119.99</div>
+      <div class="kpi-sub">BulkMart &middot; <span class="kpi-delta down">↓ 4.0% wk</span></div>
+    </div>
+  </div>
+
+  <!-- ── MAIN GRID ── -->
+  <div class="main-grid">
+
+    <!-- Competitor Cards -->
+    <div class="comp-cards-area">
+
+      <!-- Acme Corp -->
+      <div class="comp-card">
+        <div class="comp-card-top">
+          <div class="comp-card-head">
+            <div>
+              <div class="comp-card-name">Acme Corp</div>
+              <div class="comp-card-platform">Amazon &middot; Hourly checks</div>
+            </div>
+            <span class="pos-badge pos-higher">You're Higher</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <div class="price-col-label">Now</div>
+              <div class="price-col-val main">$134.99</div>
+            </div>
+            <div>
+              <div class="price-col-label">Yesterday</div>
+              <div class="price-col-val">$158.99</div>
+              <div class="price-delta delta-down">↓ 15.1%</div>
+            </div>
+            <div>
+              <div class="price-col-label">Last Week</div>
+              <div class="price-col-val">$149.99</div>
+              <div class="price-delta delta-down">↓ 9.3%</div>
+            </div>
+          </div>
+        </div>
+        <div class="trend-chart-wrap">
+          <div class="trend-chart-label">30-Day Price Trend</div>
+          <svg class="trend-svg" viewBox="0 0 280 64" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g-acme" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#374151" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#374151" stop-opacity="0.01"/>
+              </linearGradient>
+            </defs>
+            <path d="M 0,8 C 40,8 60,11 90,14 S 140,22 165,30 C 200,38 240,50 280,58 L 280,64 L 0,64 Z" fill="url(#g-acme)"/>
+            <path d="M 0,8 C 40,8 60,11 90,14 S 140,22 165,30 C 200,38 240,50 280,58" fill="none" stroke="#374151" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="280" cy="58" r="3.5" fill="#374151"/>
+            <!-- Your price reference line -->
+            <line x1="0" y1="28" x2="280" y2="28" stroke="#16A34A" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+            <text x="4" y="25" font-size="8" fill="#16A34A" opacity="0.8" font-family="Inter,sans-serif" font-weight="600">Your $149</text>
+          </svg>
+        </div>
+        <div class="comp-card-footer">
+          <div class="comp-card-footer-stat">You're <strong>$14.01 above</strong></div>
+          <button class="btn-card" onclick="toggleExpanded(this)">
+            Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="comp-card-expanded">
+          <div class="expanded-label">Products tracked</div>
+          <div class="product-price-list">
+            <div class="ppl-row"><span class="ppl-name">Pro Carry Duffel 45L</span><span class="ppl-price">$134.99</span></div>
+            <div class="ppl-row"><span class="ppl-name">Weekender Tote</span><span class="ppl-price">$85.99</span></div>
+            <div class="ppl-row"><span class="ppl-name">Slim Laptop Sleeve</span><span class="ppl-price">$52.99</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RivalVault -->
+      <div class="comp-card">
+        <div class="comp-card-top">
+          <div class="comp-card-head">
+            <div>
+              <div class="comp-card-name">RivalVault</div>
+              <div class="comp-card-platform">Shopify &middot; Daily checks</div>
+            </div>
+            <span class="pos-badge pos-lower">You're Lower</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <div class="price-col-label">Now</div>
+              <div class="price-col-val main">$152.00</div>
+            </div>
+            <div>
+              <div class="price-col-label">Yesterday</div>
+              <div class="price-col-val">$149.00</div>
+              <div class="price-delta delta-up">↑ 2.0%</div>
+            </div>
+            <div>
+              <div class="price-col-label">Last Week</div>
+              <div class="price-col-val">$148.00</div>
+              <div class="price-delta delta-up">↑ 2.7%</div>
+            </div>
+          </div>
+        </div>
+        <div class="trend-chart-wrap">
+          <div class="trend-chart-label">30-Day Price Trend</div>
+          <svg class="trend-svg" viewBox="0 0 280 64" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g-rival" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#16A34A" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#16A34A" stop-opacity="0.01"/>
+              </linearGradient>
+            </defs>
+            <path d="M 0,48 C 50,47 90,44 130,38 S 190,26 280,16 L 280,64 L 0,64 Z" fill="url(#g-rival)"/>
+            <path d="M 0,48 C 50,47 90,44 130,38 S 190,26 280,16" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="280" cy="16" r="3.5" fill="#16A34A"/>
+            <line x1="0" y1="38" x2="280" y2="38" stroke="#16A34A" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+            <text x="4" y="35" font-size="8" fill="#16A34A" opacity="0.8" font-family="Inter,sans-serif" font-weight="600">Your $149</text>
+          </svg>
+        </div>
+        <div class="comp-card-footer">
+          <div class="comp-card-footer-stat">You're <strong>$3.00 below</strong></div>
+          <button class="btn-card" onclick="toggleExpanded(this)">
+            Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="comp-card-expanded">
+          <div class="expanded-label">Products tracked</div>
+          <div class="product-price-list">
+            <div class="ppl-row"><span class="ppl-name">Pro Carry Duffel 45L</span><span class="ppl-price">$152.00</span></div>
+            <div class="ppl-row"><span class="ppl-name">Weekender Tote</span><span class="ppl-price">$91.00</span></div>
+            <div class="ppl-row"><span class="ppl-name">Laptop Sleeve 15"</span><span class="ppl-price">$54.00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PriceX Direct -->
+      <div class="comp-card">
+        <div class="comp-card-top">
+          <div class="comp-card-head">
+            <div>
+              <div class="comp-card-name">PriceX Direct</div>
+              <div class="comp-card-platform">Own Website &middot; 6-hour checks</div>
+            </div>
+            <span class="pos-badge pos-higher">You're Higher</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <div class="price-col-label">Now</div>
+              <div class="price-col-val main">$145.00</div>
+            </div>
+            <div>
+              <div class="price-col-label">Yesterday</div>
+              <div class="price-col-val">$145.00</div>
+              <div class="price-delta delta-flat">→ 0%</div>
+            </div>
+            <div>
+              <div class="price-col-label">Last Week</div>
+              <div class="price-col-val">$147.00</div>
+              <div class="price-delta delta-down">↓ 1.4%</div>
+            </div>
+          </div>
+        </div>
+        <div class="trend-chart-wrap">
+          <div class="trend-chart-label">30-Day Price Trend</div>
+          <svg class="trend-svg" viewBox="0 0 280 64" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g-pricex" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#374151" stop-opacity="0.10"/>
+                <stop offset="100%" stop-color="#374151" stop-opacity="0.01"/>
+              </linearGradient>
+            </defs>
+            <path d="M 0,28 C 55,28 75,38 115,34 S 175,24 280,30 L 280,64 L 0,64 Z" fill="url(#g-pricex)"/>
+            <path d="M 0,28 C 55,28 75,38 115,34 S 175,24 280,30" fill="none" stroke="#374151" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="280" cy="30" r="3.5" fill="#374151"/>
+            <line x1="0" y1="22" x2="280" y2="22" stroke="#16A34A" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+            <text x="4" y="19" font-size="8" fill="#16A34A" opacity="0.8" font-family="Inter,sans-serif" font-weight="600">Your $149</text>
+          </svg>
+        </div>
+        <div class="comp-card-footer">
+          <div class="comp-card-footer-stat">You're <strong>$4.00 above</strong></div>
+          <button class="btn-card" onclick="toggleExpanded(this)">
+            Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="comp-card-expanded">
+          <div class="expanded-label">Products tracked</div>
+          <div class="product-price-list">
+            <div class="ppl-row"><span class="ppl-name">Pro Carry Duffel 45L</span><span class="ppl-price">$145.00</span></div>
+            <div class="ppl-row"><span class="ppl-name">Weekender Tote</span><span class="ppl-price">$88.00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BulkMart (paused) -->
+      <div class="comp-card paused">
+        <div class="comp-card-top">
+          <div class="comp-card-head">
+            <div>
+              <div class="comp-card-name">BulkMart</div>
+              <div class="comp-card-platform">eBay &middot; Weekly checks (paused)</div>
+            </div>
+            <span class="pos-badge pos-paused">Paused</span>
+          </div>
+          <div class="price-row">
+            <div>
+              <div class="price-col-label">Last Seen</div>
+              <div class="price-col-val main">$119.99</div>
+            </div>
+            <div>
+              <div class="price-col-label">Prev. Check</div>
+              <div class="price-col-val">$122.00</div>
+              <div class="price-delta delta-down">↓ 1.6%</div>
+            </div>
+            <div>
+              <div class="price-col-label">30 Days Ago</div>
+              <div class="price-col-val">$128.00</div>
+              <div class="price-delta delta-down">↓ 6.3%</div>
+            </div>
+          </div>
+        </div>
+        <div class="trend-chart-wrap">
+          <div class="trend-chart-label">Historical Price Trend</div>
+          <svg class="trend-svg" viewBox="0 0 280 64" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g-bulk" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#9CA3AF" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#9CA3AF" stop-opacity="0.01"/>
+              </linearGradient>
+            </defs>
+            <path d="M 0,16 C 70,20 130,34 185,44 S 245,54 280,58 L 280,64 L 0,64 Z" fill="url(#g-bulk)"/>
+            <path d="M 0,16 C 70,20 130,34 185,44 S 245,54 280,58" fill="none" stroke="#9CA3AF" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="280" cy="58" r="3.5" fill="#9CA3AF"/>
+          </svg>
+        </div>
+        <div class="comp-card-footer">
+          <div class="comp-card-footer-stat">You're <strong>$29.01 above</strong></div>
+          <button class="btn-card" onclick="toggleExpanded(this)">
+            Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="comp-card-expanded">
+          <div class="expanded-label">Products tracked</div>
+          <div class="product-price-list">
+            <div class="ppl-row"><span class="ppl-name">Pro Carry Duffel 45L</span><span class="ppl-price">$119.99</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /comp-cards-area -->
+
+    <!-- ── INSIGHTS PANEL ── -->
+    <div class="insights-area">
+      <div class="insights-panel">
+        <div class="insights-head">
+          <div class="insights-head-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5" opacity="0.6"/><path d="M2 12l10 5 10-5" opacity="0.4"/></svg>
+          </div>
+          <div>
+            <div class="insights-title">AI Market Insights</div>
+            <div class="insights-subtitle">GPT-4o &middot; Updated 2 min ago</div>
+          </div>
+        </div>
+        <div class="insights-body">
+
+          <div>
+            <div class="insight-section-label">Summary</div>
+            <p class="insight-prose">
+              <strong>Acme Corp's 15.1% price reduction</strong> signals likely inventory clearance ahead of a new product line launch. RivalVault's concurrent 2% increase suggests they're positioning on quality. Overall market is compressing at <strong>−3.2% month-over-month</strong>.
+            </p>
+          </div>
+
+          <div class="insight-divider"></div>
+
+          <div>
+            <div class="insight-section-label">7-Day Predictions</div>
+            <div class="trend-pills">
+              <span class="trend-pill down"><span class="arrow">↓</span> Acme may dip further</span>
+              <span class="trend-pill up"><span class="arrow">↑</span> RivalVault holding</span>
+              <span class="trend-pill flat">PriceX stable</span>
+            </div>
+            <p class="insight-prose" style="margin-top:10px;">
+              Expect Acme to stabilise around <strong>$130–135</strong> within 2 weeks based on 6-month historical pattern. Market floor appears to be ~$118.
+            </p>
+          </div>
+
+          <div class="insight-divider"></div>
+
+          <div>
+            <div class="insight-section-label">Seasonal Patterns</div>
+            <p class="insight-prose">March–April historically sees <strong>8–12% price compression</strong> in travel accessories ahead of summer. This cycle is running ~3 weeks early.</p>
+            <div class="seasonal-bar">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-bottom:4px;">
+                <span>Jan</span><span>Mar</span><span>Jun</span><span>Sep</span><span>Dec</span>
+              </div>
+              <div class="seasonal-track">
+                <div class="seasonal-fill" style="width:65%"></div>
+              </div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:5px;">You are here — entering compression zone</div>
+            </div>
+          </div>
+
+          <div class="insight-divider"></div>
+
+          <div>
+            <div class="insight-section-label">Recommendation</div>
+            <p class="insight-prose">
+              Hold at <strong>$149</strong> while Acme's move plays out. If Acme holds below $140 for 7+ days, consider a <strong>targeted $5–8 reduction</strong> on the Duffel only to protect volume.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-grid -->
+
+  <!-- ── YOUR PRODUCTS ── -->
+  <div class="section-card">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Your Products</div>
+        <div class="section-sub">Live margin and competitive position. Drag the slider to model price changes.</div>
+      </div>
+    </div>
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Your Price</th>
+          <th>vs Market Avg</th>
+          <th>Margin</th>
+          <th>Position</th>
+          <th>Adjust Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Duffel -->
+        <tr>
+          <td>
+            <div class="prod-name">Pro Carry Duffel 45L</div>
+            <div class="prod-meta">COGS: $86.42 &middot; Target: 42%</div>
+          </td>
+          <td><div class="your-price-big" id="duffel-price-display">$149.00</div></td>
+          <td>
+            <div class="vs-avg above">+$5.01 above avg</div>
+            <div style="font-size:11px;color:var(--text-muted);">Avg: $143.99 (3 active)</div>
+          </td>
+          <td>
+            <div class="margin-wrap">
+              <div class="margin-val" id="duffel-margin-display">42.1%</div>
+              <div class="margin-bar-track"><div class="margin-bar-fill" id="duffel-margin-bar" style="width:84%"></div></div>
+              <div class="margin-target">Target: 42%</div>
+            </div>
+          </td>
+          <td><span class="status-badge status-target" id="duffel-status">On Target</span></td>
+          <td>
+            <div class="slider-wrap">
+              <div class="slider-price-display">$<span id="duffel-slider-label">149</span></div>
+              <input type="range" min="100" max="200" value="149" step="1"
+                oninput="updateSlider(this,'duffel',86.42,143.99)" />
+              <div class="slider-range"><span>$100</span><span>$200</span></div>
+            </div>
+          </td>
+        </tr>
+        <!-- Tote -->
+        <tr>
+          <td>
+            <div class="prod-name">Weekender Tote — Black</div>
+            <div class="prod-meta">COGS: $55.18 &middot; Target: 38%</div>
+          </td>
+          <td><div class="your-price-big" id="tote-price-display">$89.00</div></td>
+          <td>
+            <div class="vs-avg above">+$3.33 above avg</div>
+            <div style="font-size:11px;color:var(--text-muted);">Avg: $85.67 (2 active)</div>
+          </td>
+          <td>
+            <div class="margin-wrap">
+              <div class="margin-val" id="tote-margin-display">38.0%</div>
+              <div class="margin-bar-track"><div class="margin-bar-fill" id="tote-margin-bar" style="width:76%"></div></div>
+              <div class="margin-target">Target: 38%</div>
+            </div>
+          </td>
+          <td><span class="status-badge status-high" id="tote-status">Price Too High</span></td>
+          <td>
+            <div class="slider-wrap">
+              <div class="slider-price-display">$<span id="tote-slider-label">89</span></div>
+              <input type="range" min="60" max="130" value="89" step="1"
+                oninput="updateSlider(this,'tote',55.18,85.67)" />
+              <div class="slider-range"><span>$60</span><span>$130</span></div>
+            </div>
+          </td>
+        </tr>
+        <!-- Laptop Sleeve -->
+        <tr>
+          <td>
+            <div class="prod-name">Slim Laptop Sleeve 15"</div>
+            <div class="prod-meta">COGS: $22.05 &middot; Target: 55%</div>
+          </td>
+          <td><div class="your-price-big" id="sleeve-price-display">$49.00</div></td>
+          <td>
+            <div class="vs-avg below">−$2.50 below avg</div>
+            <div style="font-size:11px;color:var(--text-muted);">Avg: $51.50 (2 active)</div>
+          </td>
+          <td>
+            <div class="margin-wrap">
+              <div class="margin-val" id="sleeve-margin-display">55.0%</div>
+              <div class="margin-bar-track"><div class="margin-bar-fill" id="sleeve-margin-bar" style="width:100%"></div></div>
+              <div class="margin-target">Target: 55%</div>
+            </div>
+          </td>
+          <td><span class="status-badge status-raise" id="sleeve-status">Room to Raise</span></td>
+          <td>
+            <div class="slider-wrap">
+              <div class="slider-price-display">$<span id="sleeve-slider-label">49</span></div>
+              <input type="range" min="30" max="80" value="49" step="1"
+                oninput="updateSlider(this,'sleeve',22.05,51.50)" />
+              <div class="slider-range"><span>$30</span><span>$80</span></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── PRICE HISTORY ── -->
+  <div class="section-card">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Price Change History</div>
+        <div class="section-sub">All competitor price movements, newest first</div>
+      </div>
+    </div>
+    <div class="history-filters">
+      <div class="filter-group">
+        <button class="filter-chip active" onclick="setFilter(this,'type','all')">All Changes</button>
+        <button class="filter-chip" onclick="setFilter(this,'type','drop')">Drops Only</button>
+        <button class="filter-chip" onclick="setFilter(this,'type','rise')">Rises Only</button>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group">
+        <button class="filter-chip active" onclick="setFilter(this,'comp','all')">All Competitors</button>
+        <button class="filter-chip" onclick="setFilter(this,'comp','acme')">Acme Corp</button>
+        <button class="filter-chip" onclick="setFilter(this,'comp','rival')">RivalVault</button>
+        <button class="filter-chip" onclick="setFilter(this,'comp','pricex')">PriceX</button>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Today, 9:42 AM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">Acme Corp</div>
+          <div class="timeline-product">Pro Carry Duffel 45L</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$158.99</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$134.99</span>
+          <span class="timeline-pct pct-down">↓ 15.1%</span>
+        </div>
+        <span class="timeline-type type-drop">Drop</span>
+      </div>
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Yesterday, 3:15 PM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">RivalVault</div>
+          <div class="timeline-product">Pro Carry Duffel 45L</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$149.00</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$152.00</span>
+          <span class="timeline-pct pct-up">↑ 2.0%</span>
+        </div>
+        <span class="timeline-type type-rise">Rise</span>
+      </div>
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Yesterday, 11:20 AM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">BulkMart</div>
+          <div class="timeline-product">Pro Carry Duffel 45L</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$125.00</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$122.00</span>
+          <span class="timeline-pct pct-down">↓ 2.4%</span>
+        </div>
+        <span class="timeline-type type-drop">Drop</span>
+      </div>
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Mar 10, 2:05 PM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">PriceX Direct</div>
+          <div class="timeline-product">Slim Laptop Sleeve 15"</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$52.00</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$49.00</span>
+          <span class="timeline-pct pct-down">↓ 5.8%</span>
+        </div>
+        <span class="timeline-type type-drop">Drop</span>
+      </div>
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Mar 9, 9:00 AM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">Acme Corp</div>
+          <div class="timeline-product">Weekender Tote</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$89.99</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$85.99</span>
+          <span class="timeline-pct pct-down">↓ 4.4%</span>
+        </div>
+        <span class="timeline-type type-drop">Drop</span>
+      </div>
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Mar 8, 4:30 PM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">RivalVault</div>
+          <div class="timeline-product">Slim Laptop Sleeve 15"</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$51.00</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$54.00</span>
+          <span class="timeline-pct pct-up">↑ 5.9%</span>
+        </div>
+        <span class="timeline-type type-rise">Rise</span>
+      </div>
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Mar 7, 10:15 AM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">BulkMart</div>
+          <div class="timeline-product">Pro Carry Duffel 45L</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$128.00</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$125.00</span>
+          <span class="timeline-pct pct-down">↓ 2.3%</span>
+        </div>
+        <span class="timeline-type type-drop">Drop</span>
+      </div>
+      <div class="timeline-entry">
+        <div>
+          <div class="timeline-time">Mar 5, 8:00 AM</div>
+        </div>
+        <div>
+          <div class="timeline-comp">Acme Corp</div>
+          <div class="timeline-product">Pro Carry Duffel 45L</div>
+        </div>
+        <div class="timeline-change">
+          <span class="timeline-from">$162.00</span>
+          <span class="timeline-arrow">→</span>
+          <span class="timeline-to">$158.99</span>
+          <span class="timeline-pct pct-down">↓ 1.9%</span>
+        </div>
+        <span class="timeline-type type-drop">Drop</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><span>Competi</span>tel</div>
+    <div class="footer-note">Price intelligence that keeps you ahead &middot; &copy; 2026</div>
+  </div>
+</footer>
+
+<script>
+// ── Expand/collapse competitor card details ───────────────────────────────────
+function toggleExpanded(btn) {
+  const panel = btn.closest('.comp-card').querySelector('.comp-card-expanded');
+  const isOpen = panel.classList.toggle('open');
+  btn.querySelector('svg').style.transform = isOpen ? 'rotate(180deg)' : '';
+}
+
+// ── Price slider logic ────────────────────────────────────────────────────────
+function updateSlider(input, id, cogs, marketAvg) {
+  const price   = parseFloat(input.value);
+  const margin  = ((price - cogs) / price * 100);
+  const diff    = price - marketAvg;
+  const target  = { duffel: 42, tote: 38, sleeve: 55 }[id];
+  const barMax  = Math.max(margin, target) * 1.2;
+
+  document.getElementById(id + '-price-display').textContent = '$' + price.toFixed(2);
+  document.getElementById(id + '-slider-label').textContent  = price;
+  document.getElementById(id + '-margin-display').textContent = margin.toFixed(1) + '%';
+  document.getElementById(id + '-margin-bar').style.width    = Math.min(100, (margin / barMax) * 100) + '%';
+
+  const statusEl = document.getElementById(id + '-status');
+  if (price > marketAvg * 1.05) {
+    statusEl.textContent = 'Price Too High';
+    statusEl.className = 'status-badge status-high';
+  } else if (price < marketAvg * 0.97) {
+    statusEl.textContent = 'Room to Raise';
+    statusEl.className = 'status-badge status-raise';
+  } else {
+    statusEl.textContent = 'On Target';
+    statusEl.className = 'status-badge status-target';
+  }
+}
+
+// ── History filter tabs ───────────────────────────────────────────────────────
+function setFilter(btn, group, value) {
+  btn.closest('.filter-group').querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  // (full filtering logic would query the server in production)
+}
+</script>
+
+<script>
+// ── Auth ─────────────────────────────────────────────────────────────────────
+let _supabase = null;
+let _session  = null;
+
+(async () => {
+  try {
+    const cfg = await fetch('/api/config').then(r => r.json());
+    if (!cfg.supabase_url) return;
+    _supabase = window.supabase.createClient(cfg.supabase_url, cfg.supabase_anon_key);
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) { window.location.href = '/login.html'; return; }
+    _session = session;
+    const emailEl = document.getElementById('nav-user-email');
+    if (emailEl) emailEl.textContent = session.user.email;
+  } catch {}
+})();
+
+async function signOut() {
+  if (_supabase) await _supabase.auth.signOut();
+  window.location.href = '/login.html';
+}
+</script>
+
+</body>
+</html>

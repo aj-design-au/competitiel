@@ -1,0 +1,281 @@
+{
+  "meta": {
+    "system_name": "WeightFlow Design System",
+    "version": "1.0.0",
+    "last_updated": "2026-01-09",
+    "stack": {
+      "framework": "React",
+      "styling": "Tailwind CSS",
+      "font": "Inter"
+    },
+    "scope": "This file is the single source of truth for styling, layout, and component recipes in this app. Any new UI should match these rules exactly."
+  },
+  "principles": [
+    "Generous whitespace: prefer larger padding/margins and fewer elements per view.",
+    "High contrast: primary text and key actions use pure black on white.",
+    "Geometric softness: cards and panels use large radii (28–32px); buttons are fully rounded.",
+    "Minimalist data viz: monochrome charts; avoid noisy decorations.",
+    "Subtle depth: use soft shadows; avoid heavy borders and avoid glossy effects.",
+    "No blue/violet gradients: do not introduce blue/violet gradients or blue/violet-tinted UI. Use neutral grayscale only."
+  ],
+  "accessibility": {
+    "focus": "All interactive elements MUST have visible focus styles. Use focus-visible rings consistent with Button base classes.",
+    "contrast": "Maintain WCAG-friendly contrast. Primary actions are black on white; body text uses secondary gray only for non-critical content.",
+    "motion": "Keep transitions subtle (opacity/color). Avoid large motion/animated gradients."
+  },
+  "tokens": {
+    "colors": {
+      "background": {
+        "main": "#F8F9FA",
+        "muted": "#F1F3F5",
+        "surface": "#FFFFFF",
+        "inverse": "#000000"
+      },
+      "text": {
+        "primary": "#000000",
+        "secondary": "#4B5563",
+        "muted": "#9CA3AF",
+        "on_inverse": "#FFFFFF"
+      },
+      "brand": {
+        "primary": "#000000",
+        "secondary": "#FFFFFF",
+        "border": "#E5E7EB"
+      },
+      "accents": {
+        "neutral": "#F3F4F6",
+        "soft_shadow": "rgba(0, 0, 0, 0.04)"
+      }
+    },
+    "background_effects": {
+      "wash": {
+        "description": "Neutral washed-out background (no blue/violet hues). Use for the entire page shell.",
+        "tailwind_utility": "bg-wash",
+        "css_value": "radial-gradient(1200px 700px at 50% 0%, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.00) 55%), linear-gradient(180deg, #F8F9FA 0%, #F1F3F5 55%, #F8F9FA 100%)"
+      }
+    },
+    "typography": {
+      "font_family": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "scale": {
+        "h1": {
+          "tailwind": "text-h1 font-extrabold",
+          "size": "72px",
+          "line_height": "1.1",
+          "letter_spacing": "-0.04em"
+        },
+        "h2": {
+          "tailwind": "text-h2 font-bold",
+          "size": "48px",
+          "line_height": "1.2",
+          "letter_spacing": "-0.02em"
+        },
+        "h3": {
+          "tailwind": "text-h3 font-semibold",
+          "size": "32px",
+          "line_height": "1.3",
+          "letter_spacing": "-0.01em"
+        },
+        "body_lg": {
+          "tailwind": "text-body-lg",
+          "size": "18px",
+          "line_height": "1.6",
+          "weight": 400
+        },
+        "body": {
+          "tailwind": "text-body",
+          "size": "16px",
+          "line_height": "1.5",
+          "weight": 400
+        },
+        "label": {
+          "tailwind": "text-label",
+          "size": "14px",
+          "line_height": "1.4",
+          "weight": 500
+        }
+      }
+    },
+    "radii": {
+      "card": "32px",
+      "frame": "28px",
+      "input": "16px",
+      "chart": "8px",
+      "pill": "9999px"
+    },
+    "shadows": {
+      "card": "0 20px 40px -12px rgba(0, 0, 0, 0.05)",
+      "soft": "0 10px 25px -5px rgba(0, 0, 0, 0.04)"
+    },
+    "layout": {
+      "max_width": "1280px",
+      "container_padding_x": "24px",
+      "section_y": "120px",
+      "gaps": {
+        "sm": "12px",
+        "md": "16px",
+        "lg": "24px",
+        "xl": "40px"
+      }
+    }
+  },
+  "layout_guidelines": {
+    "page_shell": {
+      "outer_wrapper": "min-h-screen bg-background-main bg-wash",
+      "sticky_header_backdrop": "bg-background-main/70 backdrop-blur supports-[backdrop-filter]:bg-background-main/60 border-b border-brand-border/60"
+    },
+    "sections": {
+      "default": "py-30",
+      "alternate_background": "Use bg-background-muted for large sections to create a soft banded layout.",
+      "hero_spacing": "Hero section uses pt-20 pb-30 with a centered heading, subheading, and single primary CTA."
+    },
+    "grids": {
+      "features_3up": "grid grid-cols-1 md:grid-cols-3 gap-6",
+      "two_column": "grid grid-cols-1 lg:grid-cols-2 gap-10 items-center",
+      "two_column_cards_right": "grid grid-cols-1 lg:grid-cols-2 gap-10 items-start"
+    }
+  },
+  "component_recipes": {
+    "Container": {
+      "description": "Max width container with consistent horizontal padding.",
+      "tailwind": "max-w-container mx-auto px-6",
+      "usage": "Wrap all major sections. Never use full-width text blocks without Container."
+    },
+    "Button": {
+      "description": "Primary CTA buttons are black pills; secondary is outlined; ghost is subtle surface button.",
+      "base_tailwind": "inline-flex items-center justify-center rounded-full font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background-main",
+      "sizes": {
+        "sm": "px-6 py-3 text-sm",
+        "md": "px-8 py-4 text-base",
+        "lg": "px-8 py-4 text-lg"
+      },
+      "variants": {
+        "primary": "bg-brand-primary text-text-onInverse hover:opacity-90 transition-opacity",
+        "secondary": "bg-transparent text-brand-primary border-2 border-brand-border hover:border-brand-primary",
+        "ghost": "bg-background-surface text-text-primary border border-brand-border hover:bg-accents-neutral"
+      },
+      "rules": [
+        "Use primary for the single main CTA per section.",
+        "Do not add gradients, glows, or blue accents.",
+        "Keep icons minimal; if used, align inline with gap-2 and keep monochrome."
+      ]
+    },
+    "Badge": {
+      "description": "Small pill used for subtle metadata (e.g., 'Updated today').",
+      "tailwind": "inline-flex items-center rounded-full bg-background-surface px-3.5 py-2 text-label text-text-secondary border border-brand-border shadow-soft",
+      "rules": [
+        "Badges are informational, not primary actions.",
+        "Do not use bright colors; keep neutral."
+      ]
+    },
+    "Card": {
+      "description": "Primary surface panel.",
+      "tailwind": "bg-background-surface rounded-card shadow-card border border-accents-neutral",
+      "padding": {
+        "default": "p-card",
+        "dense": "p-6",
+        "marketing": "p-8 md:p-10"
+      }
+    },
+    "Panel": {
+      "description": "Secondary panels inside cards (2xl radius).",
+      "tailwind": "rounded-2xl border border-brand-border bg-background-surface",
+      "padding": "px-5 py-4 or p-6"
+    },
+    "MiniStat": {
+      "description": "Compact stat block (label + value + helper).",
+      "tailwind": "rounded-2xl border border-brand-border bg-background-surface px-5 py-4 shadow-soft",
+      "typography": {
+        "label": "text-label text-text-muted",
+        "value": "text-xl font-bold tracking-tight",
+        "helper": "text-label text-text-secondary"
+      }
+    },
+    "Input": {
+      "description": "Neutral input used sparingly. Inputs are not a visual focus in this landing dashboard.",
+      "tailwind": "bg-accents-neutral border border-brand-border rounded-input px-3 py-2 text-sm focus:outline-none focus:border-brand-primary transition-colors",
+      "rules": [
+        "No colored focus glows; only border change.",
+        "Keep sizes compact and consistent with fixed widget input."
+      ]
+    },
+    "HeroPreviewFrame": {
+      "description": "Large dashboard mock frame in the hero area.",
+      "tailwind": "rounded-[28px] border-[6px] border-brand-primary bg-background-surface shadow-card",
+      "rules": [
+        "Frame is the visual anchor. Keep content monochrome and readable.",
+        "Floating cards are allowed only around this frame and should be minimal."
+      ]
+    },
+    "Charts": {
+      "bar_chart": {
+        "container_tailwind": "flex items-end gap-2",
+        "bar_tailwind": "rounded-chart bg-brand-primary/90 hover:bg-brand-primary transition-colors",
+        "rules": [
+          "Monochrome only.",
+          "No gridlines unless extremely subtle.",
+          "Use rounded-chart and consistent spacing."
+        ]
+      },
+      "heat_grid": {
+        "cell_tailwind": "h-6 rounded-lg border border-brand-border",
+        "cell_filled": "bg-brand-primary",
+        "cell_empty": "bg-accents-neutral",
+        "rules": [
+          "Use low density (few rows/cols) for cleanliness.",
+          "Avoid bright colors; keep neutral."
+        ]
+      }
+    },
+    "Navigation": {
+      "description": "Floating pill header with centered links and right-side auth actions.",
+      "shell_tailwind": "rounded-full bg-background-surface border border-brand-border shadow-soft px-5 py-3",
+      "links_tailwind": "text-body text-text-secondary hover:text-text-primary transition-colors",
+      "rules": [
+        "Header stays sticky.",
+        "Keep the nav minimal (5 links max).",
+        "Use secondary button for Login and primary for Get Started."
+      ]
+    },
+    "Footer": {
+      "description": "Dark section with a large rounded container and columns.",
+      "outer_tailwind": "bg-background-inverse text-text-onInverse py-20",
+      "inner_tailwind": "rounded-card bg-brand-primary/95 border border-text-muted/20 p-10 md:p-12",
+      "link_tailwind": "text-text-muted hover:text-text-onInverse transition-colors"
+    }
+  },
+  "page_templates": {
+    "standardized_landing_dashboard": {
+      "sections_in_order": [
+        "navigation",
+        "hero_with_primary_cta",
+        "layered_dashboard_preview_with_floating_cards",
+        "logo_strip",
+        "feature_cards_numbered_3up_with_inverse_center_card",
+        "two_column_detail_section_with_bullets_and_mini_cards",
+        "two_column_section_with_text_left_and_cards_right",
+        "testimonials_center_quote_card (no profile circles)",
+        "footer_multi_column_dark"
+      ],
+      "rules": [
+        "Keep content density low: prefer 1 hero, 1 preview, 2 detail sections, 1 testimonial, 1 footer.",
+        "Maintain consistent spacing: use py-30 for major sections.",
+        "Never introduce blue/violet gradients or blue/violet color accents."
+      ]
+    }
+  },
+  "ai_implementation_rules": {
+    "when_adding_new_ui": [
+      "Use existing component recipes (Container/Button/Card/Panel/Badge) and do not invent new styling patterns without updating this file.",
+      "Prefer composition over novelty: reuse Card + Panel patterns.",
+      "Do not add external UI libraries that change styling conventions unless explicitly requested.",
+      "Avoid new colors. If a new token is needed, add it under tokens and ensure it remains neutral grayscale."
+    ],
+    "do_not": [
+      "Do not add blue or violet gradients anywhere.",
+      "Do not add emoji in UI text.",
+      "Do not add heavy drop shadows, neon glows, or high-saturation accents.",
+      "Do not mix multiple competing radius systems (stick to card/input/chart/pill)."
+    ]
+  }
+}
+
