@@ -22,14 +22,12 @@
       --text-muted:     #9CA3AF;
       --text-on-inv:    #FFFFFF;
 
-      --red:        #DC2626;
-      --red-hover:  #B91C1C;
-      --red-light:  #FEF2F2;
-      --red-border: #FECACA;
-
       --green:       #16A34A;
       --green-hover: #15803D;
       --green-light: #F0FDF4;
+
+      --red:        #DC2626;
+      --red-hover:  #B91C1C;
 
       --border:     #E5E7EB;
       --neutral:    #F3F4F6;
@@ -38,7 +36,6 @@
       --shadow-soft: 0 10px 25px -5px rgba(0,0,0,0.05);
 
       --r-card:  32px;
-      --r-frame: 28px;
       --r-input: 14px;
       --r-pill:  9999px;
 
@@ -49,9 +46,6 @@
       font-family: var(--font);
       background: var(--bg-main);
       color: var(--text-primary);
-      background-image:
-        radial-gradient(1200px 700px at 50% 0%, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.00) 55%),
-        linear-gradient(180deg, #F8F9FA 0%, #F1F3F5 55%, #F8F9FA 100%);
       min-height: 100vh;
     }
 
@@ -59,13 +53,13 @@
     .nav-wrap {
       position: sticky; top: 0; z-index: 100;
       padding: 16px 24px;
-      background: rgba(248,249,250,0.72);
+      background: rgba(248,249,250,0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 2px solid rgba(22,163,74,0.25);
+      border-bottom: 1.5px solid var(--border);
     }
     .nav-inner {
-      max-width: 1280px; margin: 0 auto;
+      max-width: 1100px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo {
@@ -79,81 +73,41 @@
       display: flex; align-items: center; justify-content: center;
     }
     .logo-mark svg { width: 18px; height: 18px; fill: #fff; }
-    .nav-links { display: flex; align-items: center; gap: 32px; }
-    .nav-links a {
-      font-size: 14px; font-weight: 500; color: var(--text-secondary);
-      text-decoration: none; transition: color 0.15s;
-    }
-    .nav-links a:hover { color: var(--text-primary); }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .nav-user-email { font-size: 12px; color: var(--text-muted); }
     .btn-ghost {
-      padding: 8px 20px; border-radius: var(--r-pill);
+      padding: 8px 18px; border-radius: var(--r-pill);
       border: 1.5px solid var(--border); background: transparent;
-      font-size: 14px; font-weight: 600; color: var(--text-primary);
-      cursor: pointer; transition: border-color 0.15s, background 0.15s;
+      font-size: 13px; font-weight: 600; color: var(--text-secondary);
+      cursor: pointer; font-family: var(--font);
+      transition: border-color 0.15s, color 0.15s;
     }
-    .btn-ghost:hover { border-color: var(--text-primary); background: var(--neutral); }
-    .btn-red {
-      padding: 8px 20px; border-radius: var(--r-pill);
-      background: var(--green); border: none;
-      font-size: 14px; font-weight: 600; color: #fff;
-      cursor: pointer; transition: background 0.15s, transform 0.1s;
+    .btn-ghost:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      max-width: 1100px; margin: 0 auto;
+      padding: 48px 24px 32px;
     }
-    .btn-red:hover { background: var(--green-hover); }
-    .btn-red:active { transform: scale(0.98); }
+    .page-header h1 {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.03em;
+    }
+    .page-header p {
+      font-size: 15px; color: var(--text-secondary); margin-top: 6px;
+    }
 
     /* ── CONTAINER ── */
-    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
 
-    /* ── HERO ── */
-    .hero {
-      padding: 80px 24px 60px;
-      max-width: 1280px; margin: 0 auto;
-      display: flex; flex-direction: column; align-items: flex-start; gap: 20px;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 14px; border-radius: var(--r-pill);
-      background: var(--bg-surface); border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      font-size: 13px; font-weight: 500; color: var(--text-secondary);
-    }
-    .hero-badge .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green); animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-    .hero h1 {
-      font-size: clamp(40px, 6vw, 68px);
-      font-weight: 900; letter-spacing: -0.04em; line-height: 1.05;
-      max-width: 720px;
-    }
-    .hero h1 span { color: inherit; }
-    .hero p {
-      font-size: 18px; line-height: 1.65;
-      color: var(--text-secondary); max-width: 520px;
-    }
-    .hero-stats {
-      display: flex; gap: 40px; margin-top: 8px;
-    }
-    .hero-stat-item { display: flex; flex-direction: column; gap: 2px; }
-    .hero-stat-val {
-      font-size: 28px; font-weight: 800; letter-spacing: -0.03em;
-    }
-    .hero-stat-val.red { color: var(--text-primary); }
-    .hero-stat-lbl { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-
-    /* ── MAIN GRID ── */
+    /* ── GRID ── */
     .dash-grid {
-      max-width: 1280px; margin: 0 auto;
-      padding: 0 24px 100px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto;
       gap: 24px;
     }
+    .col-full { grid-column: 1 / -1; }
 
-    /* ── CARD BASE ── */
+    /* ── CARD ── */
     .card {
       background: var(--bg-surface);
       border-radius: var(--r-card);
@@ -165,13 +119,9 @@
       padding: 28px 32px 0;
       display: flex; align-items: flex-start; justify-content: space-between;
     }
-    .card-title {
-      font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
-    }
-    .card-sub {
-      font-size: 13px; color: var(--text-muted); margin-top: 4px; font-weight: 400;
-    }
-    .card-body { padding: 24px 32px 32px; }
+    .card-title { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+    .card-sub   { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .card-body  { padding: 24px 32px 32px; }
 
     .card-icon {
       width: 40px; height: 40px; border-radius: 12px;
@@ -180,375 +130,257 @@
     }
     .card-icon svg { width: 20px; height: 20px; }
 
-    /* ── FULL-WIDTH CARDS ── */
-    .col-full { grid-column: 1 / -1; }
-    .col-left  { grid-column: 1; }
-    .col-right { grid-column: 2; }
-
-    /* ── FORM ELEMENTS ── */
-    .form-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    }
+    /* ── FORM ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 7px; }
     .form-group.full { grid-column: 1 / -1; }
-    label {
-      font-size: 13px; font-weight: 600;
-      color: var(--text-secondary); letter-spacing: 0.01em;
-    }
-    label .opt {
-      font-weight: 400; color: var(--text-muted); font-style: italic;
-    }
-    input[type="text"],
-    input[type="url"],
-    select {
-      width: 100%;
-      padding: 11px 16px;
+    label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+    label .opt { font-weight: 400; color: var(--text-muted); font-style: italic; }
+    input[type="text"], input[type="url"], select {
+      width: 100%; padding: 11px 16px;
       border-radius: var(--r-input);
       border: 1.5px solid var(--border);
       background: var(--bg-main);
-      font-family: var(--font);
-      font-size: 14px;
-      color: var(--text-primary);
+      font-family: var(--font); font-size: 14px; color: var(--text-primary);
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-      appearance: none;
-      -webkit-appearance: none;
+      appearance: none; -webkit-appearance: none;
     }
-    input[type="text"]:focus,
-    input[type="url"]:focus,
-    select:focus {
+    input:focus, select:focus {
       border-color: var(--text-primary);
       background: var(--bg-surface);
       box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
     }
     input::placeholder { color: var(--text-muted); }
-
-    /* custom select arrow */
     .select-wrap { position: relative; }
     .select-wrap::after {
-      content: '';
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
       width: 0; height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 6px solid var(--text-muted);
-      pointer-events: none;
+      border-left: 5px solid transparent; border-right: 5px solid transparent;
+      border-top: 6px solid var(--text-muted); pointer-events: none;
     }
     .select-wrap select { padding-right: 36px; }
 
-    /* ── START TRACKING BUTTON ── */
-    .btn-start {
-      width: 100%; padding: 16px 24px;
+    /* ── BUTTONS ── */
+    .btn-primary {
+      width: 100%; padding: 14px 24px;
       border-radius: var(--r-pill);
       background: var(--green); border: none;
-      font-family: var(--font);
-      font-size: 16px; font-weight: 700; color: #fff;
+      font-family: var(--font); font-size: 15px; font-weight: 700; color: #fff;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-      box-shadow: 0 8px 24px -4px rgba(22,163,74,0.35);
-      letter-spacing: -0.01em;
+      transition: background 0.15s, transform 0.1s;
+      box-shadow: 0 6px 20px -4px rgba(22,163,74,0.35);
     }
-    .btn-start:hover {
-      background: var(--green-hover);
-      box-shadow: 0 12px 32px -4px rgba(22,163,74,0.45);
-    }
-    .btn-start:active { transform: scale(0.99); }
-    .btn-start svg { width: 18px; height: 18px; fill: #fff; }
+    .btn-primary:hover { background: var(--green-hover); }
+    .btn-primary:active { transform: scale(0.99); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-primary svg { width: 17px; height: 17px; fill: #fff; }
 
-    /* ── YOUR PRODUCTS TABLE ── */
-    .product-table { width: 100%; border-collapse: collapse; }
-    .product-table th {
-      text-align: left; font-size: 12px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--text-muted);
-      padding: 0 16px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .product-table td {
-      padding: 14px 16px;
-      font-size: 14px;
-      border-bottom: 1px solid var(--neutral);
-      vertical-align: middle;
-    }
-    .product-table tr:last-child td { border-bottom: none; }
-    .product-table tr:hover td { background: var(--bg-main); }
-    .price-val { font-weight: 700; font-size: 15px; }
-    .margin-pill {
-      display: inline-flex; align-items: center;
-      padding: 3px 10px; border-radius: var(--r-pill);
-      font-size: 12px; font-weight: 600;
-      background: var(--neutral); color: var(--text-secondary);
-    }
-    .comp-links { display: flex; gap: 8px; flex-wrap: wrap; }
-    .comp-tag {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 10px; border-radius: var(--r-pill);
-      font-size: 12px; font-weight: 500;
-      background: var(--neutral); color: var(--text-secondary);
-      border: 1px solid var(--border);
-      cursor: pointer; transition: background 0.12s;
-    }
-    .comp-tag:hover { background: var(--border); }
-    .comp-tag-add {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 4px 10px; border-radius: var(--r-pill);
-      font-size: 12px; font-weight: 500;
-      background: var(--neutral); color: var(--text-muted);
-      border: 1.5px dashed var(--border);
-      cursor: pointer; transition: border-color 0.12s, color 0.12s;
-    }
-    .comp-tag-add:hover { border-color: var(--text-primary); color: var(--text-primary); }
-
-    .add-product-row {
-      display: flex; gap: 10px; margin-top: 20px;
-    }
-    .add-product-row input { flex: 1; }
     .btn-outline-sm {
       padding: 10px 18px; border-radius: var(--r-pill);
       border: 1.5px solid var(--border); background: transparent;
       font-size: 13px; font-weight: 600; color: var(--text-primary);
       cursor: pointer; white-space: nowrap;
-      transition: border-color 0.15s; font-family: var(--font);
+      font-family: var(--font);
+      transition: border-color 0.15s;
     }
-    .btn-outline-sm:hover { border-color: var(--text-primary); color: var(--text-primary); }
-
-    /* ── ALERT PREFS ── */
-    .alerts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .alert-section-title {
-      font-size: 12px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 14px;
-    }
-    .checkbox-list { display: flex; flex-direction: column; gap: 12px; }
-    .checkbox-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-    .checkbox-item input[type="checkbox"] { display: none; }
-    .check-box {
-      width: 20px; height: 20px; border-radius: 6px;
-      border: 2px solid var(--border);
-      background: var(--bg-main);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .checkbox-item input:checked + .check-box {
-      background: var(--text-primary); border-color: var(--text-primary);
-    }
-    .checkbox-item input:checked + .check-box::after {
-      content: '';
-      width: 5px; height: 9px;
-      border-right: 2px solid #fff; border-bottom: 2px solid #fff;
-      transform: rotate(45deg) translateY(-1px);
-    }
-    .check-label { font-size: 14px; font-weight: 500; }
-    .check-desc { font-size: 12px; color: var(--text-muted); }
-
-    .via-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-    .via-chip {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 16px; border-radius: 14px;
-      border: 1.5px solid var(--border);
-      background: var(--bg-main);
-      cursor: pointer; transition: all 0.15s;
-      flex: 1; min-width: 110px;
-    }
-    .via-chip input[type="radio"] { display: none; }
-    .via-chip:has(input:checked) {
-      background: var(--bg-surface); border-color: var(--text-primary);
-    }
-    .via-chip-icon {
-      width: 28px; height: 28px; border-radius: 8px;
-      background: var(--neutral);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .via-chip:has(input:checked) .via-chip-icon { background: var(--border); }
-    .via-chip-icon svg { width: 14px; height: 14px; }
-    .via-chip-text { font-size: 13px; font-weight: 600; }
-
-    /* ── MINI STAT STRIP ── */
-    .stat-strip {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-    }
-    .mini-stat {
-      padding: 20px 22px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: var(--bg-surface);
-      box-shadow: var(--shadow-soft);
-    }
-    .mini-stat-lbl { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .mini-stat-val { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; margin-top: 4px; }
-    .mini-stat-val.red { color: var(--text-primary); }
-    .mini-stat-sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+    .btn-outline-sm:hover { border-color: var(--text-primary); }
 
     /* ── COMPETITORS LIST ── */
-    .comp-list { display: flex; flex-direction: column; gap: 12px; }
+    .comp-list { display: flex; flex-direction: column; gap: 10px; }
     .comp-row {
-      display: flex; align-items: center; gap: 16px;
-      padding: 16px 20px; border-radius: 18px;
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: 16px;
       border: 1px solid var(--border); background: var(--bg-main);
       transition: background 0.12s;
     }
     .comp-row:hover { background: var(--neutral); }
     .comp-avatar {
-      width: 40px; height: 40px; border-radius: 12px;
+      width: 38px; height: 38px; border-radius: 10px;
       background: var(--bg-inverse); color: var(--text-on-inv);
       display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 14px; flex-shrink: 0;
+      font-weight: 800; font-size: 13px; flex-shrink: 0;
     }
-    .comp-info { flex: 1; }
-    .comp-name { font-size: 14px; font-weight: 600; }
-    .comp-url { font-size: 12px; color: var(--text-muted); }
+    .comp-info { flex: 1; min-width: 0; }
+    .comp-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .comp-url  { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .comp-badge {
-      padding: 4px 10px; border-radius: var(--r-pill);
-      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 3px 9px; border-radius: var(--r-pill);
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+      white-space: nowrap; flex-shrink: 0;
     }
     .comp-badge.active { background: #D1FAE5; color: #065F46; }
-    .comp-badge.platform {
-      background: var(--neutral); color: var(--text-secondary);
-    }
-    .comp-freq { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+    .comp-badge.freq   { background: var(--neutral); color: var(--text-secondary); }
     .comp-empty {
-      text-align: center; padding: 32px; color: var(--text-muted); font-size: 14px;
+      text-align: center; padding: 40px 20px;
+      color: var(--text-muted); font-size: 14px; line-height: 1.6;
     }
-
-    /* ── PANEL DIVIDER ── */
-    .panel-divider {
-      height: 1px; background: var(--neutral); margin: 24px 0;
+    .comp-delete {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 18px; line-height: 1;
+      padding: 0 0 0 4px; flex-shrink: 0;
+      transition: color 0.12s;
     }
+    .comp-delete:hover { color: var(--red); }
 
-    /* ── SECTION LABEL ── */
-    .section-label {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 16px;
+    /* ── AI ANALYSIS CARD ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    .ai-card-actions {
+      display: flex; align-items: center; gap: 12px;
     }
-
-    /* ── SPARKLINE ── */
-    .sparkline { display: flex; align-items: flex-end; gap: 3px; height: 32px; }
-    .spark-bar {
-      flex: 1; border-radius: 4px; background: var(--neutral);
+    .ai-spinner {
+      width: 20px; height: 20px;
+      border: 2.5px solid var(--border);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    .btn-run-analysis {
+      padding: 9px 20px; border-radius: var(--r-pill);
+      background: var(--green); border: none;
+      font-family: var(--font); font-size: 13px; font-weight: 700; color: #fff;
+      cursor: pointer; display: flex; align-items: center; gap: 7px;
       transition: background 0.15s;
     }
-    .spark-bar.active { background: var(--green); opacity: 0.5; }
-    .spark-bar.peak   { background: var(--green); opacity: 1; }
+    .btn-run-analysis:hover { background: var(--green-hover); }
+    .btn-run-analysis:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-run-analysis svg { width: 13px; height: 13px; fill: #fff; }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--bg-inverse); color: var(--text-on-inv);
-      padding: 60px 24px;
-    }
-    .footer-inner {
-      max-width: 1280px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 24px;
-    }
-    .footer-logo { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; }
-    .footer-logo span { color: inherit; }
-    .footer-note { font-size: 13px; color: var(--text-muted); }
-
-    /* ── AI ANALYSIS PANEL ── */
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .analysis-block { display: flex; flex-direction: column; gap: 20px; }
+    .analysis-block { display: flex; flex-direction: column; gap: 16px; }
     .analysis-competitor-section {
-      border: 1px solid var(--border); border-radius: 22px;
-      overflow: hidden;
+      border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
     }
     .analysis-comp-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 22px;
+      padding: 16px 20px;
       background: var(--bg-main);
       border-bottom: 1px solid var(--border);
       cursor: pointer;
     }
     .analysis-comp-header:hover { background: var(--neutral); }
-    .analysis-comp-title { font-size: 15px; font-weight: 700; }
+    .analysis-comp-title { font-size: 14px; font-weight: 700; }
     .analysis-comp-meta  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .analysis-body { padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+    .analysis-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
 
     .ai-section-label {
       font-size: 10px; font-weight: 800; text-transform: uppercase;
       letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 8px;
     }
     .ai-action-block {
-      padding: 16px 20px; border-radius: 16px;
-      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 18px; border-radius: 14px;
+      display: flex; gap: 12px; align-items: flex-start;
     }
-    .ai-action-block.action-yes {
-      background: var(--bg-inverse); border: 1.5px solid var(--bg-inverse);
-    }
-    .ai-action-block.action-yes .ai-action-text { color: rgba(255,255,255,0.75); }
-    .ai-action-block.action-no {
-      background: var(--neutral); border: 1.5px solid var(--border);
-    }
-    .ai-action-dot {
-      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
-    }
+    .ai-action-block.action-yes { background: var(--bg-inverse); border: 1.5px solid var(--bg-inverse); }
+    .ai-action-block.action-no  { background: var(--neutral); border: 1.5px solid var(--border); }
+    .ai-action-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
     .action-yes .ai-action-dot { background: #fff; }
     .action-no  .ai-action-dot { background: var(--text-muted); }
-    .ai-action-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; }
+    .ai-action-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
     .action-yes .ai-action-label { color: #fff; }
     .action-no  .ai-action-label { color: var(--text-secondary); }
-    .ai-action-text { font-size: 13px; color: var(--text-secondary); margin-top: 4px; line-height: 1.55; }
+    .ai-action-text { font-size: 13px; color: var(--text-secondary); margin-top: 3px; line-height: 1.55; }
+    .action-yes .ai-action-text { color: rgba(255,255,255,0.75); }
+
+    .ai-changes-list { display: flex; flex-direction: column; gap: 7px; }
+    .ai-change-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 12px; border-radius: 10px; background: var(--bg-main);
+      font-size: 13px; flex-wrap: wrap;
+    }
+    .change-from  { color: var(--text-muted); }
+    .change-arrow { font-weight: 700; }
+    .change-to    { font-weight: 600; }
 
     .ai-adjustments-table { width: 100%; border-collapse: collapse; }
     .ai-adjustments-table th {
-      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
       color: var(--text-muted); text-align: left; padding: 0 12px 8px;
       border-bottom: 1px solid var(--border);
     }
     .ai-adjustments-table td {
-      padding: 10px 12px; font-size: 13px;
+      padding: 9px 12px; font-size: 13px;
       border-bottom: 1px solid var(--neutral); vertical-align: top;
     }
     .ai-adjustments-table tr:last-child td { border-bottom: none; }
     .price-old { color: var(--text-muted); text-decoration: line-through; }
-    .price-new { font-weight: 700; color: var(--text-primary); }
+    .price-new { font-weight: 700; }
 
-    .ai-changes-list { display: flex; flex-direction: column; gap: 8px; }
-    .ai-change-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px; border-radius: 12px; background: var(--bg-main);
-      font-size: 13px;
-    }
-    .change-from { color: var(--text-muted); }
-    .change-arrow { color: var(--text-primary); font-weight: 700; }
-    .change-to   { font-weight: 600; }
-
+    .ai-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .ai-prose {
       font-size: 13px; line-height: 1.65; color: var(--text-secondary);
-      background: var(--bg-main); padding: 16px; border-radius: 14px;
+      background: var(--bg-main); padding: 14px; border-radius: 12px;
+    }
+    .ai-no-adj { font-size: 13px; color: var(--text-muted); font-style: italic; padding: 6px 0; }
+
+    .ai-empty {
+      text-align: center; padding: 48px 20px;
+      color: var(--text-muted); font-size: 14px; line-height: 1.7;
+    }
+    .ai-empty-icon {
+      font-size: 36px; margin-bottom: 14px; opacity: 0.4;
     }
 
-    .ai-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    .ai-no-adj {
-      font-size: 13px; color: var(--text-muted); font-style: italic; padding: 8px 0;
+    /* ── PRODUCTS ── */
+    .panel-divider { height: 1px; background: var(--neutral); margin: 24px 0; }
+    .section-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 14px;
+    }
+    .product-table { width: 100%; border-collapse: collapse; }
+    .product-table th {
+      text-align: left; font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--text-muted); padding: 0 14px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .product-table td {
+      padding: 13px 14px; font-size: 14px;
+      border-bottom: 1px solid var(--neutral); vertical-align: middle;
+    }
+    .product-table tr:last-child td { border-bottom: none; }
+    .price-val { font-weight: 700; }
+    .margin-pill {
+      display: inline-flex; padding: 3px 10px; border-radius: var(--r-pill);
+      font-size: 12px; font-weight: 600;
+      background: var(--neutral); color: var(--text-secondary);
+    }
+    .add-product-row { display: flex; gap: 10px; }
+    .add-product-row input { flex: 1; }
+    .prod-delete {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 16px;
+      transition: color 0.12s;
+    }
+    .prod-delete:hover { color: var(--red); }
+    .prod-empty {
+      text-align: center; padding: 24px; color: var(--text-muted); font-size: 14px;
     }
 
-    /* toast */
+    /* ── TOAST ── */
     #toast {
-      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
-      padding: 14px 22px; border-radius: var(--r-pill);
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      padding: 13px 20px; border-radius: var(--r-pill);
       font-size: 14px; font-weight: 600; color: #fff;
-      background: #111; box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      background: #111; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
       transform: translateY(80px); opacity: 0;
       transition: transform 0.3s, opacity 0.3s;
       pointer-events: none;
     }
-    #toast.show { transform: translateY(0); opacity: 1; }
-    #toast.toast-red { background: var(--red); }
+    #toast.show  { transform: translateY(0); opacity: 1; }
+    #toast.toast-red   { background: #B91C1C; }
     #toast.toast-green { background: #166534; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
+    @media (max-width: 820px) {
       .dash-grid { grid-template-columns: 1fr; }
-      .col-left, .col-right, .col-full { grid-column: 1; }
-      .stat-strip { grid-template-columns: repeat(2, 1fr); }
-      .alerts-grid { grid-template-columns: 1fr; }
+      .col-full  { grid-column: 1; }
       .form-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .hero h1 { font-size: clamp(32px, 8vw, 48px); }
-      .hero-stats { flex-wrap: wrap; gap: 24px; }
+      .form-group.full { grid-column: 1; }
+      .ai-two-col { grid-template-columns: 1fr; }
+      .add-product-row { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -563,456 +395,180 @@
       </div>
       Competitel
     </div>
-    <div class="nav-links">
-      <a href="#">Dashboard</a>
-      <a href="#">Competitors</a>
-      <a href="#">Alerts</a>
-      <a href="#">Reports</a>
-    </div>
     <div class="nav-actions">
-      <span id="nav-user-email" style="font-size:12px;color:var(--text-muted);margin-right:4px;"></span>
-      <button class="btn-ghost" onclick="signOut()" style="font-size:13px;padding:7px 16px;">Sign Out</button>
-      <button class="btn-ghost">Settings</button>
-      <button class="btn-red">Upgrade Plan</button>
+      <span id="nav-user-email" class="nav-user-email"></span>
+      <button class="btn-ghost" onclick="signOut()">Sign Out</button>
     </div>
   </div>
 </nav>
 
-<!-- ── HERO ── -->
-<div class="hero">
-  <div class="hero-badge">
-    <span class="dot"></span>
-    Live tracking active — 24 competitors monitored
-  </div>
-  <h1>Outsmart every<br/><span>price move.</span></h1>
-  <p>Real-time competitive price intelligence. Know the moment a competitor changes their pricing — before your customers do.</p>
-  <div class="hero-stats">
-    <div class="hero-stat-item">
-      <span class="hero-stat-val red">3.2%</span>
-      <span class="hero-stat-lbl">Avg. margin recovered</span>
-    </div>
-    <div class="hero-stat-item">
-      <span class="hero-stat-val">847</span>
-      <span class="hero-stat-lbl">Price events this week</span>
-    </div>
-    <div class="hero-stat-item">
-      <span class="hero-stat-val red">12min</span>
-      <span class="hero-stat-lbl">Avg. alert response</span>
-    </div>
-  </div>
+<!-- ── PAGE HEADER ── -->
+<div class="page-header">
+  <h1>Price Intelligence Dashboard</h1>
+  <p>Track competitors, run AI analysis, and know when to act on pricing changes.</p>
 </div>
 
-<!-- ── STAT STRIP ── -->
-<div class="container" style="margin-bottom:24px;">
-  <div class="stat-strip">
-    <div class="mini-stat">
-      <div class="mini-stat-lbl">Competitors Tracked</div>
-      <div class="mini-stat-val">24</div>
-      <div class="mini-stat-sub">+3 this month</div>
-    </div>
-    <div class="mini-stat">
-      <div class="mini-stat-lbl">Price Drops Detected</div>
-      <div class="mini-stat-val red">18</div>
-      <div class="mini-stat-sub">Last 7 days</div>
-    </div>
-    <div class="mini-stat">
-      <div class="mini-stat-lbl">Price Increases</div>
-      <div class="mini-stat-val">9</div>
-      <div class="mini-stat-sub">Last 7 days</div>
-    </div>
-    <div class="mini-stat">
-      <div class="mini-stat-lbl">Products Monitored</div>
-      <div class="mini-stat-val">142</div>
-      <div class="mini-stat-sub">Across all competitors</div>
-    </div>
-  </div>
-</div>
+<!-- ── MAIN CONTENT ── -->
+<div class="container">
+  <div class="dash-grid">
 
-<!-- ── MAIN DASHBOARD GRID ── -->
-<div class="dash-grid">
-
-  <!-- ── ADD COMPETITOR FORM ── -->
-  <div class="card col-left">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Add Competitor</div>
-        <div class="card-sub">Start tracking a new competitor's pricing</div>
-      </div>
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
-        </svg>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="comp-name">Competitor Name</label>
-          <input type="text" id="comp-name" placeholder="e.g. Acme Corp" />
-        </div>
-        <div class="form-group">
-          <label for="comp-platform">Platform</label>
-          <div class="select-wrap">
-            <select id="comp-platform">
-              <option value="">Select platform…</option>
-              <option>Shopify Store</option>
-              <option>Amazon</option>
-              <option>eBay</option>
-              <option>Etsy</option>
-              <option>Own Website</option>
-              <option>Other</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group full">
-          <label for="comp-url">Website URL</label>
-          <input type="url" id="comp-url" placeholder="https://competitor.com" />
-        </div>
-        <div class="form-group full">
-          <label for="comp-product">Specific Product Page <span class="opt">(optional)</span></label>
-          <input type="url" id="comp-product" placeholder="https://competitor.com/product/123 — leave blank to track whole site" />
-        </div>
-        <div class="form-group full">
-          <label for="comp-freq">Check Frequency</label>
-          <div class="select-wrap">
-            <select id="comp-freq">
-              <option>Every Hour</option>
-              <option>Every 6 Hours</option>
-              <option selected>Daily</option>
-              <option>Weekly</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:24px;">
-        <button id="btn-add-comp" class="btn-start">
-          <svg viewBox="0 0 24 24" fill="white"><path d="M5 3l14 9-14 9V3z"/></svg>
-          Start Tracking
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── ACTIVE COMPETITORS ── -->
-  <div class="card col-right">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Active Competitors</div>
-        <div class="card-sub">Currently monitored</div>
-      </div>
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-      </div>
-    </div>
-    <div class="card-body">
-      <div id="comp-list" class="comp-list">
-        <div class="comp-row">
-          <div class="comp-avatar" style="background:#0A0A0A;">AC</div>
-          <div class="comp-info">
-            <div class="comp-name">Acme Corp</div>
-            <div class="comp-url">acmecorp.com &middot; Amazon</div>
-          </div>
-          <span class="comp-badge platform">Every Hour</span>
-          <span class="comp-badge active">Live</span>
-        </div>
-        <div class="comp-row">
-          <div class="comp-avatar" style="background:#1a1a2e;">RV</div>
-          <div class="comp-info">
-            <div class="comp-name">RivalVault</div>
-            <div class="comp-url">rivalvault.com &middot; Shopify Store</div>
-          </div>
-          <span class="comp-badge platform">Daily</span>
-          <span class="comp-badge active">Live</span>
-        </div>
-        <div class="comp-row">
-          <div class="comp-avatar" style="background:#374151;">PX</div>
-          <div class="comp-info">
-            <div class="comp-name">PriceX Direct</div>
-            <div class="comp-url">pricex.io &middot; Own Website</div>
-          </div>
-          <span class="comp-badge platform">Every 6 Hours</span>
-          <span class="comp-badge active">Live</span>
-        </div>
-        <div class="comp-row" style="opacity:0.5;">
-          <div class="comp-avatar" style="background:#6B7280;">BM</div>
-          <div class="comp-info">
-            <div class="comp-name">BulkMart</div>
-            <div class="comp-url">bulkmart.com &middot; eBay</div>
-          </div>
-          <span class="comp-badge platform">Weekly</span>
-          <span class="comp-badge" style="background:#FEF3C7;color:#92400E;">Paused</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── YOUR PRODUCTS ── -->
-  <div class="card col-full">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Your Products</div>
-        <div class="card-sub">Track your catalog and link to competitor equivalents</div>
-      </div>
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
-      </div>
-    </div>
-    <div class="card-body">
-      <table class="product-table">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Your Price</th>
-            <th>Target Margin</th>
-            <th>Competitor Equivalents</th>
-            <th>7-Day Trend</th>
-          </tr>
-        </thead>
-        <tbody id="product-tbody">
-          <tr>
-            <td style="font-weight:600;">Pro Carry Duffel 45L</td>
-            <td><span class="price-val">$149.00</span></td>
-            <td><span class="margin-pill">42%</span></td>
-            <td>
-              <div class="comp-links">
-                <span class="comp-tag">Acme Corp</span>
-                <span class="comp-tag">RivalVault</span>
-                <span class="comp-tag-add">+ Link</span>
-              </div>
-            </td>
-            <td>
-              <div class="sparkline">
-                <div class="spark-bar" style="height:40%"></div>
-                <div class="spark-bar" style="height:55%"></div>
-                <div class="spark-bar active" style="height:60%"></div>
-                <div class="spark-bar" style="height:50%"></div>
-                <div class="spark-bar peak" style="height:100%"></div>
-                <div class="spark-bar active" style="height:80%"></div>
-                <div class="spark-bar active" style="height:75%"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td style="font-weight:600;">Weekender Tote — Black</td>
-            <td><span class="price-val">$89.00</span></td>
-            <td><span class="margin-pill">38%</span></td>
-            <td>
-              <div class="comp-links">
-                <span class="comp-tag">PriceX Direct</span>
-                <span class="comp-tag-add">+ Link</span>
-              </div>
-            </td>
-            <td>
-              <div class="sparkline">
-                <div class="spark-bar" style="height:70%"></div>
-                <div class="spark-bar active" style="height:80%"></div>
-                <div class="spark-bar peak" style="height:100%"></div>
-                <div class="spark-bar active" style="height:90%"></div>
-                <div class="spark-bar" style="height:60%"></div>
-                <div class="spark-bar" style="height:55%"></div>
-                <div class="spark-bar active" style="height:65%"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td style="font-weight:600;">Slim Laptop Sleeve 15"</td>
-            <td><span class="price-val">$49.00</span></td>
-            <td><span class="margin-pill">55%</span></td>
-            <td>
-              <div class="comp-links">
-                <span class="comp-tag">Acme Corp</span>
-                <span class="comp-tag">BulkMart</span>
-                <span class="comp-tag-add">+ Link</span>
-              </div>
-            </td>
-            <td>
-              <div class="sparkline">
-                <div class="spark-bar active" style="height:50%"></div>
-                <div class="spark-bar" style="height:40%"></div>
-                <div class="spark-bar" style="height:35%"></div>
-                <div class="spark-bar active" style="height:60%"></div>
-                <div class="spark-bar active" style="height:70%"></div>
-                <div class="spark-bar peak" style="height:100%"></div>
-                <div class="spark-bar active" style="height:85%"></div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="panel-divider"></div>
-
-      <div class="section-label">Add New Product</div>
-      <div class="add-product-row">
-        <input type="text" id="new-prod-name"   placeholder="Product name" style="flex:2;" />
-        <input type="text" id="new-prod-price"  placeholder="Your price, e.g. 49.99" />
-        <input type="text" id="new-prod-margin" placeholder="Target margin %" />
-        <button class="btn-outline-sm" id="btn-add-product">+ Add Product</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── ALERT PREFERENCES ── -->
-  <div class="card col-full">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Alert Preferences</div>
-        <div class="card-sub">Choose what triggers an alert and how you receive it</div>
-      </div>
-      <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="alerts-grid">
-        <!-- TRIGGERS -->
+    <!-- ── ADD COMPETITOR FORM ── -->
+    <div class="card">
+      <div class="card-header">
         <div>
-          <div class="alert-section-title">Alert Triggers</div>
-          <div class="checkbox-list">
-
-            <label class="checkbox-item">
-              <input type="checkbox" checked />
-              <div class="check-box"></div>
-              <div>
-                <div class="check-label">Price Drop</div>
-                <div class="check-desc">Competitor lowers price on a tracked product</div>
-              </div>
-            </label>
-
-            <label class="checkbox-item">
-              <input type="checkbox" checked />
-              <div class="check-box"></div>
-              <div>
-                <div class="check-label">Price Increase</div>
-                <div class="check-desc">Competitor raises price — your opportunity window</div>
-              </div>
-            </label>
-
-            <label class="checkbox-item">
-              <input type="checkbox" />
-              <div class="check-box"></div>
-              <div>
-                <div class="check-label">New Product Launch</div>
-                <div class="check-desc">Competitor adds a product to a tracked category</div>
-              </div>
-            </label>
-
-            <label class="checkbox-item">
-              <input type="checkbox" />
-              <div class="check-box"></div>
-              <div>
-                <div class="check-label">Product Discontinued</div>
-                <div class="check-desc">Competitor removes a product from their catalog</div>
-              </div>
-            </label>
-
-          </div>
-        </div>
-
-        <!-- CHANNELS -->
-        <div>
-          <div class="alert-section-title">Alert me via</div>
-          <div class="via-grid">
-
-            <label class="via-chip">
-              <input type="radio" name="via" value="email" checked />
-              <div class="via-chip-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-                </svg>
-              </div>
-              <span class="via-chip-text">Email</span>
-            </label>
-
-            <label class="via-chip">
-              <input type="radio" name="via" value="sms" />
-              <div class="via-chip-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-              </div>
-              <span class="via-chip-text">SMS</span>
-            </label>
-
-            <label class="via-chip">
-              <input type="radio" name="via" value="slack" />
-              <div class="via-chip-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 11v4"/><path d="M8 7v1"/><path d="M12 7v4"/><path d="M16 7v4"/><path d="M16 13v1"/>
-                </svg>
-              </div>
-              <span class="via-chip-text">Slack</span>
-            </label>
-
-            <label class="via-chip">
-              <input type="radio" name="via" value="dashboard" />
-              <div class="via-chip-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                </svg>
-              </div>
-              <span class="via-chip-text">Dashboard only</span>
-            </label>
-
-          </div>
-
-          <div style="margin-top:32px;">
-            <button id="btn-analyze-now" class="btn-start">
-              <svg viewBox="0 0 24 24" fill="white"><path d="M5 3l14 9-14 9V3z"/></svg>
-              Run AI Analysis Now
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── AI PRICE ANALYSIS ── -->
-  <div class="card col-full" id="ai-analysis-card">
-    <div class="card-header">
-      <div>
-        <div class="card-title">AI Price Analysis</div>
-        <div class="card-sub" id="ai-status-line">Waiting for first analysis run…</div>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <div id="ai-spinner" style="display:none;">
-          <div style="width:20px;height:20px;border:2.5px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin 0.7s linear infinite;"></div>
+          <div class="card-title">Add Competitor</div>
+          <div class="card-sub">Start tracking a new competitor's pricing</div>
         </div>
         <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+            <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
           </svg>
         </div>
       </div>
-    </div>
-    <div class="card-body">
-      <div id="ai-results-container">
-        <div style="text-align:center;padding:40px 0;color:var(--text-muted);">
-          <div style="font-size:32px;margin-bottom:12px;">&#9675;</div>
-          <div style="font-size:14px;">Add a competitor and click <strong>Run AI Analysis Now</strong> to get your first price intelligence report.</div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="comp-name">Competitor Name</label>
+            <input type="text" id="comp-name" placeholder="e.g. Apple" />
+          </div>
+          <div class="form-group">
+            <label for="comp-platform">Platform</label>
+            <div class="select-wrap">
+              <select id="comp-platform">
+                <option value="">Select platform…</option>
+                <option>Shopify Store</option>
+                <option>Amazon</option>
+                <option>eBay</option>
+                <option>Etsy</option>
+                <option>Own Website</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label for="comp-url">Website URL</label>
+            <input type="url" id="comp-url" placeholder="https://competitor.com" />
+          </div>
+          <div class="form-group full">
+            <label for="comp-product">Specific Product Page <span class="opt">(optional)</span></label>
+            <input type="url" id="comp-product" placeholder="https://competitor.com/product/123" />
+          </div>
+          <div class="form-group full">
+            <label for="comp-freq">Check Frequency</label>
+            <div class="select-wrap">
+              <select id="comp-freq">
+                <option>Every Hour</option>
+                <option>Every 6 Hours</option>
+                <option selected>Daily</option>
+                <option>Weekly</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:20px;">
+          <button id="btn-add-comp" class="btn-primary">
+            <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+            Start Tracking
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-</div><!-- /dash-grid -->
+    <!-- ── ACTIVE COMPETITORS ── -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Tracked Competitors</div>
+          <div class="card-sub" id="comp-count-sub">Loading…</div>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="comp-list" class="comp-list">
+          <div class="comp-empty">Loading competitors…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AI ANALYSIS ── -->
+    <div class="card col-full" id="ai-analysis-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">AI Price Analysis</div>
+          <div class="card-sub" id="ai-status-line">No analysis run yet</div>
+        </div>
+        <div class="ai-card-actions">
+          <div id="ai-spinner" style="display:none;" class="ai-spinner"></div>
+          <button id="btn-analyze-now" class="btn-run-analysis">
+            <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+            Run AI Analysis
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="ai-results-container">
+          <div class="ai-empty">
+            <div class="ai-empty-icon">&#9675;</div>
+            Add a competitor above, then click <strong>Run AI Analysis</strong> to get your first price intelligence report.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── YOUR PRODUCTS ── -->
+    <div class="card col-full">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Your Products</div>
+          <div class="card-sub">Track your catalog and link to competitor equivalents</div>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Your Price</th>
+              <th>Target Margin</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="product-tbody">
+            <tr><td colspan="4" class="prod-empty">No products added yet.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="panel-divider"></div>
+        <div class="section-label">Add Product</div>
+        <div class="add-product-row">
+          <input type="text" id="new-prod-name"   placeholder="Product name" style="flex:2;" />
+          <input type="text" id="new-prod-price"  placeholder="Price, e.g. 49.99" />
+          <input type="text" id="new-prod-margin" placeholder="Margin %" />
+          <button class="btn-outline-sm" id="btn-add-product">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo"><span style="color:var(--green);">Competi</span>tel</div>
-      <div class="footer-note" style="margin-top:6px;">Price intelligence that keeps you ahead.</div>
+<footer style="background:var(--bg-inverse);color:var(--text-on-inv);padding:40px 24px;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <div style="font-size:15px;font-weight:800;letter-spacing:-0.02em;">
+      <span style="color:var(--green);">Competi</span>tel
     </div>
-    <div class="footer-note">&copy; 2026 Competitel. All rights reserved.</div>
+    <div style="font-size:13px;color:var(--text-muted);">&copy; 2026 Competitel. All rights reserved.</div>
   </div>
 </footer>
 
@@ -1027,7 +583,7 @@ let _session  = null;
 async function initAuth() {
   try {
     const cfg = await fetch('/api/config').then(r => r.json());
-    if (!cfg.supabase_url) return null; // server not configured yet, allow local use
+    if (!cfg.supabase_url) return null;
     _supabase = window.supabase.createClient(cfg.supabase_url, cfg.supabase_anon_key);
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session) { window.location.href = '/login.html'; return null; }
@@ -1035,7 +591,7 @@ async function initAuth() {
     const emailEl = document.getElementById('nav-user-email');
     if (emailEl) emailEl.textContent = session.user.email;
     return session;
-  } catch { return null; } // if server is down, degrade gracefully
+  } catch { return null; }
 }
 
 function authHeaders() {
@@ -1060,14 +616,14 @@ function toast(msg, type = '') {
 
 function timeAgo(iso) {
   const d = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
-  if (d < 60)   return 'just now';
-  if (d < 3600) return Math.round(d/60) + 'm ago';
-  if (d < 86400) return Math.round(d/3600) + 'h ago';
-  return Math.round(d/86400) + 'd ago';
+  if (d < 60)    return 'just now';
+  if (d < 3600)  return Math.round(d / 60) + 'm ago';
+  if (d < 86400) return Math.round(d / 3600) + 'h ago';
+  return Math.round(d / 86400) + 'd ago';
 }
 
 function initials(name) {
-  return name.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+  return name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
 }
 
 const BG_COLORS = ['#0A0A0A','#1a1a2e','#374151','#1F2937','#111827','#1e293b'];
@@ -1077,76 +633,53 @@ function avatarColor(name) {
   return BG_COLORS[Math.abs(h) % BG_COLORS.length];
 }
 
-// ── Example / placeholder data ────────────────────────────────────────────────
-const EXAMPLE_COMPETITORS = [
-  { id: null, name: 'Acme Corp',     website_url: 'https://acmecorp.com',   platform: 'Amazon',       check_frequency: 'Every Hour', active: true  },
-  { id: null, name: 'RivalVault',    website_url: 'https://rivalvault.com', platform: 'Shopify Store', check_frequency: 'Daily',      active: true  },
-  { id: null, name: 'PriceX Direct', website_url: 'https://pricex.io',      platform: 'Own Website',  check_frequency: 'Every 6 Hours', active: true },
-  { id: null, name: 'BulkMart',      website_url: 'https://bulkmart.com',   platform: 'eBay',          check_frequency: 'Weekly',     active: false },
-];
-
-const EXAMPLE_PRODUCTS = [
-  { id: null, name: 'Pro Carry Duffel 45L',  price: '149.00', target_margin: '42', sparkline: [40,55,60,50,100,80,75] },
-  { id: null, name: 'Weekender Tote — Black', price: '89.00',  target_margin: '38', sparkline: [70,80,100,90,60,55,65] },
-  { id: null, name: 'Slim Laptop Sleeve 15"', price: '49.00',  target_margin: '55', sparkline: [50,40,35,60,70,100,85] },
-];
-
-// ── Render Competitors List ───────────────────────────────────────────────────
-function compRowHtml(c, isExample) {
-  const hostname = (() => { try { return new URL(c.website_url).hostname; } catch { return c.website_url; } })();
-  const liveBadge = c.active
-    ? `<span class="comp-badge active">Live</span>`
-    : `<span class="comp-badge" style="background:#FEF3C7;color:#92400E;">Paused</span>`;
-  const deleteBtn = isExample ? '' : `<button onclick="deleteCompetitor('${c.id}')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;line-height:1;padding:0 0 0 8px;" title="Remove">&times;</button>`;
-  return `
-    <div class="comp-row" style="${!c.active ? 'opacity:0.5;' : ''}">
-      <div class="comp-avatar" style="background:${avatarColor(c.name)}">${initials(c.name)}</div>
-      <div class="comp-info">
-        <div class="comp-name">${esc(c.name)}</div>
-        <div class="comp-url">${esc(hostname)} &middot; ${esc(c.platform)}</div>
-      </div>
-      <span class="comp-badge platform">${esc(c.check_frequency)}</span>
-      ${liveBadge}
-      ${deleteBtn}
-    </div>`;
+function esc(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── Render Competitors ────────────────────────────────────────────────────────
 function renderCompetitors(list) {
-  // Only replace the baked-in examples when real data exists
-  if (!list.length) return;
   const el = document.getElementById('comp-list');
-  el.innerHTML = list.map(c => compRowHtml(c, false)).join('');
+  const sub = document.getElementById('comp-count-sub');
+  if (!list.length) {
+    el.innerHTML = `<div class="comp-empty">No competitors tracked yet.<br>Add one using the form on the left.</div>`;
+    sub.textContent = 'None added yet';
+    return;
+  }
+  sub.textContent = list.length + ' competitor' + (list.length === 1 ? '' : 's') + ' tracked';
+  el.innerHTML = list.map(c => {
+    const hostname = (() => { try { return new URL(c.website_url).hostname; } catch { return c.website_url; } })();
+    const liveBadge = c.active
+      ? `<span class="comp-badge active">Live</span>`
+      : `<span class="comp-badge" style="background:#FEF3C7;color:#92400E;">Paused</span>`;
+    return `
+      <div class="comp-row">
+        <div class="comp-avatar" style="background:${avatarColor(c.name)}">${initials(c.name)}</div>
+        <div class="comp-info">
+          <div class="comp-name">${esc(c.name)}</div>
+          <div class="comp-url">${esc(hostname)}${c.platform ? ' · ' + esc(c.platform) : ''}</div>
+        </div>
+        <span class="comp-badge freq">${esc(c.check_frequency)}</span>
+        ${liveBadge}
+        <button class="comp-delete" onclick="deleteCompetitor('${c.id}')" title="Remove">&times;</button>
+      </div>`;
+  }).join('');
 }
 
-// ── Render Products Table ─────────────────────────────────────────────────────
-function sparklineHtml(bars) {
-  if (!bars) return '';
-  const max = Math.max(...bars);
-  return `<div class="sparkline">${bars.map((v, i) => {
-    const pct = Math.round((v / max) * 100);
-    const cls = pct === 100 ? 'peak' : pct >= 60 ? 'active' : '';
-    return `<div class="spark-bar ${cls}" style="height:${pct}%"></div>`;
-  }).join('')}</div>`;
-}
-
-function productRowHtml(p, isExample) {
-  const deleteBtn = isExample ? '' : `<button onclick="deleteProduct('${p.id}')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;" title="Remove">&times;</button>`;
-  const spark = p.sparkline ? sparklineHtml(p.sparkline) : '<span style="color:var(--text-muted);font-size:12px;">—</span>';
-  return `
+// ── Render Products ───────────────────────────────────────────────────────────
+function renderProducts(list) {
+  const tbody = document.getElementById('product-tbody');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="4" class="prod-empty">No products added yet.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(p => `
     <tr>
       <td style="font-weight:600;">${esc(p.name)}</td>
-      <td><span class="price-val">${p.price ? '$'+esc(p.price) : '—'}</span></td>
+      <td><span class="price-val">${p.price ? '$' + esc(p.price) : '—'}</span></td>
       <td>${p.target_margin ? `<span class="margin-pill">${esc(p.target_margin)}%</span>` : '—'}</td>
-      <td><div class="comp-links"><span class="comp-tag-add">+ Link competitor</span></div></td>
-      <td style="display:flex;align-items:center;gap:12px;">${spark}${deleteBtn}</td>
-    </tr>`;
-}
-
-function renderProducts(list) {
-  // Only replace the baked-in examples when real data exists
-  if (!list.length) return;
-  const tbody = document.getElementById('product-tbody');
-  tbody.innerHTML = list.map(p => productRowHtml(p, false)).join('');
+      <td style="text-align:right;"><button class="prod-delete" onclick="deleteProduct('${p.id}')" title="Remove">&times;</button></td>
+    </tr>`).join('');
 }
 
 // ── Render AI Analysis ────────────────────────────────────────────────────────
@@ -1155,22 +688,21 @@ function renderAnalysis(results) {
   const statusLine = document.getElementById('ai-status-line');
 
   if (!results.length) {
-    container.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--text-muted);">
-      <div style="font-size:32px;margin-bottom:12px;">&#9675;</div>
-      <div style="font-size:14px;">Add a competitor and click <strong>Run AI Analysis Now</strong> to get your first price intelligence report.</div>
-    </div>`;
+    container.innerHTML = `
+      <div class="ai-empty">
+        <div class="ai-empty-icon">&#9675;</div>
+        Add a competitor above, then click <strong>Run AI Analysis</strong> to get your first price intelligence report.
+      </div>`;
     return;
   }
 
   statusLine.textContent = 'Last run: ' + timeAgo(results[0].timestamp);
-
-  container.innerHTML = `<div class="analysis-block">` + results.map(r => renderCompetitorAnalysis(r)).join('') + `</div>`;
+  container.innerHTML = `<div class="analysis-block">` + results.map(renderCompetitorAnalysis).join('') + `</div>`;
 }
 
 function renderCompetitorAnalysis(r) {
   const a = r.analysis || {};
 
-  // Immediate Action
   const actionNeeded = a.immediate_action?.needed === true;
   const actionHtml = `
     <div>
@@ -1184,7 +716,6 @@ function renderCompetitorAnalysis(r) {
       </div>
     </div>`;
 
-  // Price Changes
   const changes = Array.isArray(a.changes_detected) ? a.changes_detected : [];
   const changesHtml = `
     <div>
@@ -1201,7 +732,6 @@ function renderCompetitorAnalysis(r) {
         : `<div class="ai-no-adj">No price changes detected since last check.</div>`}
     </div>`;
 
-  // Recommended Adjustments
   const adjustments = Array.isArray(a.price_adjustments) ? a.price_adjustments : [];
   const adjHtml = `
     <div>
@@ -1221,7 +751,6 @@ function renderCompetitorAnalysis(r) {
         : `<div class="ai-no-adj">No price adjustments recommended at this time.</div>`}
     </div>`;
 
-  // Market Insights + Trend (side by side)
   const insightsHtml = `
     <div class="ai-two-col">
       <div>
@@ -1234,16 +763,14 @@ function renderCompetitorAnalysis(r) {
       </div>
     </div>`;
 
-  // Patterns
   const patternsHtml = a.patterns_detected
     ? `<div><div class="ai-section-label">Patterns Detected</div><div class="ai-prose">${esc(a.patterns_detected)}</div></div>`
     : '';
 
-  // Scrape summary
   const scrapeOk = r.current_prices?.results?.filter(x => x.success) || [];
-  const allPrices = scrapeOk.flatMap(x => x.prices.slice(0,5).map(p => p.price));
-  const scrapeSummary = allPrices.length
-    ? `<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Scraped prices: ${allPrices.slice(0,8).join(', ')}${allPrices.length > 8 ? '…' : ''}</div>`
+  const allPrices = scrapeOk.flatMap(x => x.prices.slice(0, 5).map(p => p.price));
+  const scrapeMeta = allPrices.length
+    ? ` · Prices: ${allPrices.slice(0, 6).join(', ')}${allPrices.length > 6 ? '…' : ''}`
     : '';
 
   return `
@@ -1251,11 +778,13 @@ function renderCompetitorAnalysis(r) {
       <div class="analysis-comp-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none' ? '' : 'none'">
         <div>
           <div class="analysis-comp-title">${esc(r.competitor_name)}</div>
-          <div class="analysis-comp-meta">Analyzed ${timeAgo(r.timestamp)}${scrapeSummary ? ' &middot; ' + allPrices.slice(0,4).join(', ') : ''}</div>
+          <div class="analysis-comp-meta">Analyzed ${timeAgo(r.timestamp)}${scrapeMeta}</div>
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
-          ${actionNeeded ? '<span class="comp-badge" style="background:var(--bg-inverse);color:#fff;">Action Needed</span>' : '<span class="comp-badge" style="background:var(--neutral);color:var(--text-secondary);">All Clear</span>'}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          ${actionNeeded
+            ? '<span class="comp-badge" style="background:var(--bg-inverse);color:#fff;">Action Needed</span>'
+            : '<span class="comp-badge" style="background:#D1FAE5;color:#065F46;">All Clear</span>'}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
       </div>
       <div class="analysis-body">
@@ -1268,24 +797,19 @@ function renderCompetitorAnalysis(r) {
     </div>`;
 }
 
-// ── HTML escape ───────────────────────────────────────────────────────────────
-function esc(str) {
-  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
 // ── API Calls ─────────────────────────────────────────────────────────────────
 async function loadCompetitors() {
   try {
     const r = await fetch('/api/competitors', { headers: authHeaders() });
     renderCompetitors(await r.json());
-  } catch {}
+  } catch { renderCompetitors([]); }
 }
 
 async function loadProducts() {
   try {
     const r = await fetch('/api/products', { headers: authHeaders() });
     renderProducts(await r.json());
-  } catch {}
+  } catch { renderProducts([]); }
 }
 
 async function loadAnalysis() {
@@ -1306,13 +830,13 @@ async function deleteProduct(id) {
   loadProducts();
 }
 
-// ── Add Competitor Form ───────────────────────────────────────────────────────
+// ── Add Competitor ────────────────────────────────────────────────────────────
 document.getElementById('btn-add-comp').addEventListener('click', async () => {
-  const name  = document.getElementById('comp-name').value.trim();
-  const url   = document.getElementById('comp-url').value.trim();
-  const prod  = document.getElementById('comp-product').value.trim();
-  const plat  = document.getElementById('comp-platform').value;
-  const freq  = document.getElementById('comp-freq').value;
+  const name = document.getElementById('comp-name').value.trim();
+  const url  = document.getElementById('comp-url').value.trim();
+  const prod = document.getElementById('comp-product').value.trim();
+  const plat = document.getElementById('comp-platform').value;
+  const freq = document.getElementById('comp-freq').value;
 
   if (!name || !url) { toast('Name and Website URL are required', 'red'); return; }
 
@@ -1335,7 +859,7 @@ document.getElementById('btn-add-comp').addEventListener('click', async () => {
     toast('Error: ' + e.message, 'red');
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M5 3l14 9-14 9V3z"/></svg> Start Tracking';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" width="17" height="17"><path d="M5 3l14 9-14 9V3z"/></svg> Start Tracking';
   }
 });
 
@@ -1357,11 +881,11 @@ document.getElementById('btn-add-product').addEventListener('click', async () =>
   toast('Product added', 'green');
 });
 
-// ── Analyze Now ───────────────────────────────────────────────────────────────
+// ── Run AI Analysis ───────────────────────────────────────────────────────────
 document.getElementById('btn-analyze-now').addEventListener('click', async () => {
   const btn = document.getElementById('btn-analyze-now');
   btn.disabled = true;
-  btn.textContent = 'Running analysis…';
+  btn.textContent = 'Running…';
   document.getElementById('ai-spinner').style.display = 'block';
   document.getElementById('ai-status-line').textContent = 'Analysis running…';
 
@@ -1373,14 +897,15 @@ document.getElementById('btn-analyze-now').addEventListener('click', async () =>
     toast('Analysis complete', 'green');
   } catch (e) {
     toast('Error: ' + e.message, 'red');
+    document.getElementById('ai-status-line').textContent = 'Analysis failed';
   } finally {
     document.getElementById('ai-spinner').style.display = 'none';
     btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;"><path d="M5 3l14 9-14 9V3z"/></svg> Run AI Analysis Now';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" style="width:13px;height:13px;"><path d="M5 3l14 9-14 9V3z"/></svg> Run AI Analysis';
   }
 });
 
-// ── Server-Sent Events (live updates) ────────────────────────────────────────
+// ── Server-Sent Events ────────────────────────────────────────────────────────
 function connectSSE() {
   const token = _session ? _session.access_token : '';
   const es = new EventSource('/api/events' + (token ? `?token=${encodeURIComponent(token)}` : ''));
@@ -1391,7 +916,7 @@ function connectSSE() {
       document.getElementById('ai-spinner').style.display = 'none';
       const btn = document.getElementById('btn-analyze-now');
       btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M5 3l14 9-14 9V3z"/></svg> Run AI Analysis Now';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" style="width:13px;height:13px;"><path d="M5 3l14 9-14 9V3z"/></svg> Run AI Analysis';
       toast('Analysis complete for ' + event.data.competitor_name, 'green');
     }
     if (event.type === 'cycle_error') {
@@ -1401,21 +926,19 @@ function connectSSE() {
     if (event.type === 'analysis_skipped') {
       toast('Add your Gemini API key in .env to enable AI analysis', '');
       document.getElementById('ai-spinner').style.display = 'none';
-      document.getElementById('ai-status-line').textContent = 'Gemini API key not configured — scrape complete, analysis skipped';
+      document.getElementById('ai-status-line').textContent = 'Gemini API key not configured';
       const btn = document.getElementById('btn-analyze-now');
       btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M5 3l14 9-14 9V3z"/></svg> Run AI Analysis Now';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" style="width:13px;height:13px;"><path d="M5 3l14 9-14 9V3z"/></svg> Run AI Analysis';
     }
   };
   es.onerror = () => { es.close(); setTimeout(connectSSE, 5000); };
 }
 
-// ── Boot ─────────────────────────────────────────────────────────────────────
+// ── Boot ──────────────────────────────────────────────────────────────────────
 (async () => {
   const session = await initAuth();
-  if (!session && document.querySelector('[data-requires-auth]')) return;
 
-  // Check if we're running against the server (public endpoint — no auth needed)
   try {
     await fetch('/api/config');
     if (session) {
@@ -1423,13 +946,19 @@ function connectSSE() {
       if (status.ok) {
         await Promise.all([loadCompetitors(), loadProducts(), loadAnalysis()]);
         connectSSE();
-        // Poll analysis every 60s as backup
         setInterval(loadAnalysis, 60000);
       }
+    } else {
+      // No session — show empty states
+      renderCompetitors([]);
+      renderProducts([]);
     }
-    return; // server is up; either loaded data or no session yet
+    return;
   } catch {}
-  // If running as a plain file (no server), show a hint
+
+  // Running as a plain file without server
+  renderCompetitors([]);
+  renderProducts([]);
   const note = document.createElement('div');
   note.style.cssText = 'position:fixed;top:80px;right:24px;z-index:9999;padding:14px 20px;background:#fff;border:1.5px solid #DC2626;border-radius:16px;font-size:13px;max-width:300px;box-shadow:0 8px 24px rgba(0,0,0,0.1);';
   note.innerHTML = '<strong style="color:#DC2626;">Server not running</strong><br><span style="color:#4B5563;">Run <code style="background:#F3F4F6;padding:2px 6px;border-radius:6px;">npm install && npm start</code> then open <a href="http://localhost:3000" style="color:#DC2626;">localhost:3000</a></span>';
