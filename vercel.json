@@ -7,5 +7,10 @@
       "includeFiles": ["*.html", "lib/**", "migrations/**", "data/**"]
     }
   }],
-  "routes": [{ "src": "/(.*)", "dest": "server.js" }]
+  "routes": [{ "src": "/(.*)", "dest": "server.js" }],
+  "functions": {
+    "server.js": {
+      "maxDuration": 60
+    }
+  }
 }

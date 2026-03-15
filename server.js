@@ -212,14 +212,13 @@ app.post('/api/analyze', requireAuth, async (req, res) => {
     if (competitor_id) competitors = competitors.filter(c => c.id === competitor_id);
     if (!competitors.length) return res.status(404).json({ error: 'No competitors found' });
 
-    // Respond immediately; run cycles in background
-    res.json({ ok: true, running: competitors.map(c => c.id) });
-
+    // Run cycles synchronously so serverless hosts don't kill them early
     for (const c of competitors) {
-      scheduler.runCycle(c).catch(err =>
+      await scheduler.runCycle(c).catch(err =>
         console.error('[api/analyze] Error:', err.message)
       );
     }
+    res.json({ ok: true, completed: competitors.map(c => c.id) });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

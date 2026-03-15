@@ -1369,9 +1369,11 @@ document.getElementById('btn-analyze-now').addEventListener('click', async () =>
     const res = await fetch('/api/analyze', { method: 'POST', headers: authHeaders(), body: '{}' });
     const data = await res.json();
     if (data.error) throw new Error(data.error);
-    toast('Analysis queued — results will appear shortly', 'green');
+    await loadAnalysis();
+    toast('Analysis complete', 'green');
   } catch (e) {
     toast('Error: ' + e.message, 'red');
+  } finally {
     document.getElementById('ai-spinner').style.display = 'none';
     btn.disabled = false;
     btn.innerHTML = '<svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;"><path d="M5 3l14 9-14 9V3z"/></svg> Run AI Analysis Now';
