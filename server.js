@@ -246,15 +246,18 @@ app.get('/api/status', requireAuth, async (req, res) => {
 });
 
 // ── Startup ───────────────────────────────────────────────────────────────────
-async function start() {
-  // Kick off scheduler (wrapped in try/catch inside initAll)
-  await scheduler.initAll();
 
+// Init scheduler (non-blocking; no-ops gracefully when DB not configured)
+scheduler.initAll().catch(err => console.error('[scheduler] init error:', err.message));
+
+// Export app for Vercel serverless
+module.exports = app;
+
+// Start listening when run directly (local dev)
+if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`\n✓ Competitel running at http://localhost:${PORT}`);
     console.log(`  Supabase URL:   ${process.env.SUPABASE_URL        ? process.env.SUPABASE_URL + ' ✓' : 'NOT SET — add to .env'}`);
     console.log(`  Gemini API key: ${process.env.GEMINI_API_KEY       ? 'configured ✓'                  : 'NOT SET — add to .env'}`);
   });
 }
-
-start().catch(err => { console.error('Startup error:', err); process.exit(1); });
